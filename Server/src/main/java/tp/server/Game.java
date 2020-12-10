@@ -15,10 +15,11 @@ public class Game
     private MoveValidator moveValidator;
     ArrayList<AbstractPlayer> players;
     private ServerSocket serverSocket;
+    private Map map;
 
     public static void main(String[] args)
     {
-        /*ObjectMapper objectMapper = new ObjectMapper();
+       /* ObjectMapper objectMapper = new ObjectMapper();
         Field field1 = new Field(1,2,3,1,3,true);
         Field field2 = new Field(-1,7,5,1,4,false);
 
@@ -35,7 +36,6 @@ public class Game
 
         Game game = new Game();
 
-
         try {
             game.init();
         } catch (IOException e) {
@@ -48,6 +48,8 @@ public class Game
     private void init() throws IOException {
         serverSocket = new ServerSocket();
 
+        map = new Map();
+        map.createMap();
 
     }
 
