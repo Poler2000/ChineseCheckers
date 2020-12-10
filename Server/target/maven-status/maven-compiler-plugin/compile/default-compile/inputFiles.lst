@@ -1,1 +1,4 @@
-/home/poler/DEV/Java/L4/Server/src/main/java/org/example/App.java
+/home/poler/DEV/Java/L4/Server/src/main/java/tp/server/Pawn.java
+/home/poler/DEV/Java/L4/Server/src/main/java/tp/server/Field.java
+/home/poler/DEV/Java/L4/Server/src/main/java/tp/server/Game.java
+/home/poler/DEV/Java/L4/Server/src/main/java/tp/server/Coordinates.java
