@@ -1,10 +1,11 @@
 package tp.server;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 public abstract class AbstractPlayer {
-    private static final int numOfPawns = 10;
-    private Pawn[] pawns = new Pawn[numOfPawns];
+    private ArrayList<Pawn> pawns = new ArrayList<Pawn>();
     private MoveBuilder moveBuilder;
 
     // TODO implement
@@ -27,4 +28,7 @@ public abstract class AbstractPlayer {
         }
     }
 
+    public ArrayList<Pawn> getPawns() {
+        return pawns;
+    }
 }
