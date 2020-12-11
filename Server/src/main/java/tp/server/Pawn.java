@@ -12,6 +12,7 @@ public class Pawn {
         id = assignId();
         location = field;
         this.owner = owner;
+        location.setOccupied(true);
     }
 
     public Field getLocation() {
@@ -27,7 +28,9 @@ public class Pawn {
     }
 
     public void move(Field newLocation) {
+        location.setOccupied(false);
         location = newLocation;
+        location.setOccupied(true);
     }
 
     private static int assignId() {

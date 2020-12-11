@@ -61,9 +61,14 @@ public class Game
         catch (IOException e) {
             e.printStackTrace();
         }
-        map = new Map();
-        map.createMap();
+
         numOfPlayers = communicationCenter.establishConnections();
+        if (numOfPlayers == 1 || numOfPlayers == 5) {
+            numOfPlayers++;
+            players.add(new Bot());
+        }
+        MapFactory mapFactory = new SixPointedStarFactory();
+        map = mapFactory.createMap(numOfPlayers);
 
     }
 

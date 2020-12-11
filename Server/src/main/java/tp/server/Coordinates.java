@@ -13,4 +13,11 @@ public class Coordinates {
         this.y = y;
         this.z = z;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Coordinates)obj).x == x &&
+                ((Coordinates)obj).y == y &&
+                ((Coordinates)obj).z == z;
+    }
 }

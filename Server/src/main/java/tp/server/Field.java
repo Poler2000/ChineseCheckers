@@ -17,7 +17,7 @@ public class Field {
         BOTTOM
     }
     //private final int id;
-    //private boolean occupied;
+    private boolean occupied;
     private Corners corner;
 
     private static final Object locker = new Object();
@@ -29,6 +29,7 @@ public class Field {
         playerHome = 0;
         playerGoal = 0;
         corner = determineCorner();
+        occupied = false;
     }
     /*
     public Field(final int x, final int y, final int z,
@@ -65,19 +66,19 @@ public class Field {
         return id;
     }*/
 
-    /*public boolean isOccupied() {
+    public boolean isOccupied() {
         return occupied;
     }
 
     public void setOccupied(final boolean status) {
         occupied = status;
-    }*/
+    }
 
-    private static int assignId() {
+   /* private static int assignId() {
         synchronized (locker) {
             return id_counter++;
         }
-    }
+    }*/
 
     private Corners determineCorner() {
         if (coord.z < -4) {
