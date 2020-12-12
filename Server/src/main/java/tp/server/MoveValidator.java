@@ -10,7 +10,7 @@ public class MoveValidator {
     }
 
     public boolean Validate(final Move move) {
-        Iterator<Step> steps = move.getStepsIterator();
+        Iterator<Step> steps = move.getSteps().iterator();
         
         if (steps.hasNext()) {
             if (isNeighbourValid(steps.next())) {

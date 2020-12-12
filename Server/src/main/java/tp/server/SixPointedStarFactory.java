@@ -1,5 +1,6 @@
 package tp.server;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SixPointedStarFactory implements MapFactory{
@@ -24,6 +25,68 @@ public class SixPointedStarFactory implements MapFactory{
         return map;
     }
 
+    @Override
+    public ArrayList<Pawn> createPawns(int playerId, int numOfPlayers) {
+        ArrayList<Pawn> pawns = new ArrayList<>();
+
+        if (playerId == 1 && numOfPlayers != 4) {
+            for (int x = 1; x <= 4; x++) {
+                for (int y = 4; y > 4 - x; y--) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        if (playerId == 2 && (numOfPlayers == 4 || numOfPlayers == 6)) {
+            for (int x = 5; x <= 8; x++) {
+                for (int y = -4; y <= 4 - x; y++) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        if ((playerId == 2 && numOfPlayers == 3) ||
+                (playerId == 3 && (numOfPlayers == 4 || numOfPlayers == 6))) {
+            for (int x = 1; x <= 4; x++) {
+                for (int y = -5; y >= -4 - x; y--) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        if ((playerId == 2 && numOfPlayers == 2) || (playerId == 4 && numOfPlayers == 6)) {
+            for (int x = -4; x < 0; x++) {
+                for (int y = -4; y < -4 - x; y++) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        if ((playerId == 4 && numOfPlayers == 4) || (playerId == 5 && numOfPlayers == 6)) {
+            for (int x = -8; x < -4; x++) {
+                for (int y = 4; y > -4 - x; y--) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        if ((playerId == 2 && numOfPlayers == 4) || (playerId == 6 && numOfPlayers == 6)) {
+            for (int x = -4; x < 0; x++) {
+                for (int y = 5; y < 4 - x; y++) {
+                    pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
+                }
+            }
+            return pawns;
+        }
+
+        return null;
+    }
+
     private void setupCorners(final int numOfPLayers) {
 
         Iterator<Field> it;
@@ -44,7 +107,7 @@ public class SixPointedStarFactory implements MapFactory{
                 }
                 break;
             case 3:
-                it = map.getAllFields();
+                it = map.getFields().iterator();
 
                 while(it.hasNext()) {
                     Field f = it.next();
@@ -74,7 +137,7 @@ public class SixPointedStarFactory implements MapFactory{
                 }
                 break;
             case 6:
-                it = map.getAllFields();
+                it = map.getFields().iterator();
 
                 while(it.hasNext()) {
                     Field f = it.next();

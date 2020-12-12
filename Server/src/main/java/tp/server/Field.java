@@ -31,16 +31,16 @@ public class Field {
         corner = determineCorner();
         occupied = false;
     }
-    /*
-    public Field(final int x, final int y, final int z,
-                 final int playerHome, final int playerGoal, final boolean occupied) {
+
+    public Field(final Coordinates coord,
+                 final int playerHome, final int playerGoal, final boolean occupied, final Corners corner) {
        // id = assignId();
-        coord = new Coordinates(x, y, z);
+        this.coord = coord;
         this.playerHome = playerHome;
         this.playerGoal = playerGoal;
-        corner = determineCorner();
-        //this.occupied = occupied;
-    }*/
+        this.corner = corner;
+        this.occupied = occupied;
+    }
 
     public Coordinates getCoord() {
         return coord;

@@ -1,3 +1,4 @@
 tp/server/ServerCfgMsgTest.class
+tp/server/PlayerTest.class
 org/example/AppTest.class
 tp/server/GameStateMsgTest.class

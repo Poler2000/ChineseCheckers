@@ -10,7 +10,7 @@ public class Move {
         steps.add(step);
     }
 
-    public Iterator<Step> getStepsIterator() {
-        return steps.iterator();
+    public ArrayList<Step> getSteps() {
+        return steps;
     }
 }

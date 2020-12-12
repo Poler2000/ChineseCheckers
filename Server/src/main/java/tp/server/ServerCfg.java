@@ -5,24 +5,30 @@ import java.util.ArrayList;
 public class ServerCfg extends ServerMsg {
     private int players;
     private Game.gameStates state;
-    private ArrayList<Field> fields = new ArrayList<Field>();
+    private Map map;
+    private int yourPlayerID;
 
-    public ServerCfg(int players, Game.gameStates state, ArrayList<Field> fields) {
+    public ServerCfg(int players, Game.gameStates state, Map map, int id) {
         type = "ServerCfg";
         this.players = players;
         this.state = state;
-        this.fields = fields;
+        this.map = map;
+        yourPlayerID = id;
     }
 
     public int getPlayers() {
         return players;
     }
 
-    public ArrayList<Field> getFields() {
-        return fields;
+    public Map getMap() {
+        return map;
     }
 
     public Game.gameStates getState() {
         return state;
+    }
+
+    public int getYourPlayerID() {
+        return yourPlayerID;
     }
 }

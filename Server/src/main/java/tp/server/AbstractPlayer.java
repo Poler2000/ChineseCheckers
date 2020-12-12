@@ -8,14 +8,14 @@ public abstract class AbstractPlayer {
     private ArrayList<Pawn> pawns = new ArrayList<Pawn>();
     private MoveBuilder moveBuilder;
 
-    // TODO implement
-    public Move proposeMove() {
-        return new Move();
+    public AbstractPlayer(ArrayList<Pawn> pawns) {
+        this.pawns = pawns;
     }
+    public abstract Move proposeMove();
 
     // executes validated move
     public void makeMove(final Move move) {
-        Iterator<Step> steps = move.getStepsIterator();
+        Iterator<Step> steps = move.getSteps().iterator();
 
         while (steps.hasNext()) {
             Step step = steps.next();
@@ -30,5 +30,8 @@ public abstract class AbstractPlayer {
 
     public ArrayList<Pawn> getPawns() {
         return pawns;
+    }
+
+    public void setMove(final String move) {
     }
 }

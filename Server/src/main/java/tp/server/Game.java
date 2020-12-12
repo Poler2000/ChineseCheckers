@@ -30,21 +30,6 @@ public class Game
 
     public static void main(String[] args)
     {
-       /* ObjectMapper objectMapper = new ObjectMapper();
-        Field field1 = new Field(1,2,3,1,3,true);
-        Field field2 = new Field(-1,7,5,1,4,false);
-
-        String json1 = null;
-        String json2 = null;
-        try {
-            json1 = objectMapper.writeValueAsString(field1);
-            json2 = objectMapper.writeValueAsString(field2);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(json1);
-        System.out.println(json2);*/
-
         Game game = new Game();
 
         game.init();
@@ -62,13 +47,20 @@ public class Game
             e.printStackTrace();
         }
 
+        int numOfBots = 0;
         numOfPlayers = communicationCenter.establishConnections();
         if (numOfPlayers == 1 || numOfPlayers == 5) {
             numOfPlayers++;
-            players.add(new Bot());
+            numOfBots++;
         }
         MapFactory mapFactory = new SixPointedStarFactory();
         map = mapFactory.createMap(numOfPlayers);
+        for(int i = 1; i <= numOfPlayers - numOfBots; i++) {
+            players.add(new Player(mapFactory.createPawns(i, numOfPlayers)));
+        }
+        if (numOfBots > 0) {
+            players.add(new Bot(mapFactory.createPawns(numOfPlayers, numOfPlayers)));
+        }
 
     }
 
@@ -131,7 +123,6 @@ public class Game
             case "registerMsg":
                 if (gameState == gameStates.NO_PLAYERS) {
                     gameState = gameStates.READY_TO_START;
-                    players.add(new Player());
                 }
                 break;
             case "setupMsg":
