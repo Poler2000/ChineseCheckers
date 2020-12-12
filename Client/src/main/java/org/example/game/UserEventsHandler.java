@@ -1,5 +1,6 @@
-package game;
-import structural.Step;
+package org.example.game;
+
+import org.example.structural.Step;
 
 public interface UserEventsHandler {
     public boolean handleMovement(Step movement);

@@ -1,18 +1,21 @@
-package tp.server;
+package tp.server.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import tp.server.*;
+import tp.server.communication.CommunicationCenter;
+import tp.server.communication.GameStateMsg;
+import tp.server.communication.ServerMsg;
+import tp.server.structural.Move;
+import tp.server.structural.Pawn;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 
 public class Game
 {
-    enum gameStates {
+    public enum gameStates {
         NO_PLAYERS,
         READY_TO_START,
         ONGOING,

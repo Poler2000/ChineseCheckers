@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.structural;
 
 public class Step {
     private final Pawn piece;
@@ -7,6 +7,11 @@ public class Step {
     public Step(final Pawn pawn, final Field field) {
         this.piece = pawn;
         this.destination = field;
+    }
+
+    public Step() {
+        this.piece = null;
+        this.destination = null;
     }
 
     public Pawn getPiece() {

@@ -1,8 +1,14 @@
-package tp.server;
+package tp.server.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import tp.server.logic.AbstractPlayer;
+import tp.server.logic.Player;
+import tp.server.structural.Field;
+import tp.server.structural.Move;
+import tp.server.structural.Pawn;
+import tp.server.structural.Step;
 
 import java.util.ArrayList;
 

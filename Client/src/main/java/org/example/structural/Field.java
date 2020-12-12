@@ -1,4 +1,4 @@
-package structural;
+package org.example.structural;
 
 public class Field {
     public int coordinates[];

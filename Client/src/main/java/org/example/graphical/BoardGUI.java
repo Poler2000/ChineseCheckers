@@ -1,4 +1,4 @@
-package graphical;
+package org.example.graphical;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

@@ -1,5 +1,8 @@
 package tp.server;
 
+import tp.server.structural.Field;
+import tp.server.structural.Pawn;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -16,11 +19,12 @@ public class SixPointedStarFactory implements MapFactory{
         }
         for (int x = -8; x <= 4; x++) {
             for (int y = 4; y >= -4 - x; y--) {
-                if ((Math.abs(x) + Math.abs(y)) > 4) {
+                if ((Math.abs(x) > 4 ||  Math.abs(y) > 4) || x + y > 4) {
                     map.addField(new Field(x, y, -(x + y)));
                 }
             }
         }
+
         setupCorners(numOfPLayers);
         return map;
     }
@@ -29,6 +33,7 @@ public class SixPointedStarFactory implements MapFactory{
     public ArrayList<Pawn> createPawns(int playerId, int numOfPlayers) {
         ArrayList<Pawn> pawns = new ArrayList<>();
 
+        System.out.println("Hello");
         if (playerId == 1 && numOfPlayers != 4) {
             for (int x = 1; x <= 4; x++) {
                 for (int y = 4; y > 4 - x; y--) {
@@ -66,18 +71,19 @@ public class SixPointedStarFactory implements MapFactory{
             return pawns;
         }
 
-        if ((playerId == 4 && numOfPlayers == 4) || (playerId == 5 && numOfPlayers == 6)) {
+        if ((playerId == 4 && numOfPlayers == 4) || (playerId == 5 && numOfPlayers == 6)
+                || (playerId == 3 && numOfPlayers == 3)) {
             for (int x = -8; x < -4; x++) {
-                for (int y = 4; y > -4 - x; y--) {
+                for (int y = 4; y >= -4 - x; y--) {
                     pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
                 }
             }
             return pawns;
         }
 
-        if ((playerId == 2 && numOfPlayers == 4) || (playerId == 6 && numOfPlayers == 6)) {
+        if ((playerId == 1 && numOfPlayers == 4) || (playerId == 6 && numOfPlayers == 6)) {
             for (int x = -4; x < 0; x++) {
-                for (int y = 5; y < 4 - x; y++) {
+                for (int y = 5; y <= 4 - x; y++) {
                     pawns.add(new Pawn(map.getField(x, y, -(x + y)), playerId));
                 }
             }

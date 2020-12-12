@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.structural;
 
 /**
  * Simple data structure to represent cube coordinates

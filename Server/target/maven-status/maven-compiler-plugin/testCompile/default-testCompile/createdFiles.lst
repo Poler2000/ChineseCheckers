@@ -1,4 +1,4 @@
-tp/server/ServerCfgMsgTest.class
-tp/server/PlayerTest.class
-org/example/AppTest.class
-tp/server/GameStateMsgTest.class
+tp/server/SixPointedStarFactoryTest.class
+tp/server/logic/GameTest.class
+tp/server/structural/MoveTest.class
+tp/server/communication/CommunicationCenterTest.class

@@ -1,4 +1,4 @@
-package graphical;
+package org.example.graphical;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,7 @@ public class ActionsGUI extends JPanel{
     private JButton endTurnButton;
     private JLabel statusText;
 
-    public ActionsGUI(GUIManager listener){
+    public ActionsGUI(final GUIManager listener){
         super();
         startGameButton = new JButton("Start gry");
         endTurnButton = new JButton("Koniec tury");

@@ -1,6 +1,7 @@
-package tp.server;
+package tp.server.communication;
 
-import java.util.ArrayList;
+import tp.server.logic.Game;
+import tp.server.Map;
 
 public class ServerCfg extends ServerMsg {
     private int players;

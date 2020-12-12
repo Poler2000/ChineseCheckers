@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.structural;
 
 /**
  * Representation of single field on the map
@@ -7,7 +7,7 @@ public class Field {
     private final Coordinates coord;
     private int playerHome;
     private int playerGoal;
-    enum Corners {
+    public enum Corners {
         NONE,
         TOP,
         TOP_LEFT,
@@ -32,14 +32,8 @@ public class Field {
         occupied = false;
     }
 
-    public Field(final Coordinates coord,
-                 final int playerHome, final int playerGoal, final boolean occupied, final Corners corner) {
-       // id = assignId();
-        this.coord = coord;
-        this.playerHome = playerHome;
-        this.playerGoal = playerGoal;
-        this.corner = corner;
-        this.occupied = occupied;
+    public Field() {
+       coord = new Coordinates(0,0,0);
     }
 
     public Coordinates getCoord() {
@@ -104,5 +98,11 @@ public class Field {
 
     public Corners getCorner() {
         return corner;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Field f = (Field)obj;
+        return this.coord.equals(f.coord) && this.playerGoal == f.playerGoal && this.playerHome == f.playerHome;
     }
 }

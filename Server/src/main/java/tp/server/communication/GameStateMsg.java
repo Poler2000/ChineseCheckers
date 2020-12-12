@@ -1,4 +1,6 @@
-package tp.server;
+package tp.server.communication;
+
+import tp.server.structural.Pawn;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,6 @@
-package tp.server;
+package tp.server.communication;
+
+import tp.server.logic.Game;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -33,7 +35,7 @@ public class CommunicationCenter {
                         Socket socket = serverSocket.accept();
                         numberOfClients++;
                         clientConnectors.add(new ClientConnector(socket));
-                        clientConnectors.get(numberOfClients).start();
+                        clientConnectors.get(numberOfClients - 1).start();
                     }
                     catch (IOException e) {
                         e.printStackTrace();

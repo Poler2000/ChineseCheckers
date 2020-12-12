@@ -1,5 +1,7 @@
 package tp.server;
 
+import tp.server.structural.Pawn;
+
 import java.util.ArrayList;
 
 public interface MapFactory {

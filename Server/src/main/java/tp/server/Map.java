@@ -1,6 +1,9 @@
 package tp.server;
 
 
+import tp.server.structural.Coordinates;
+import tp.server.structural.Field;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,7 +46,7 @@ public class Map {
         fields.add(field);
     }
 
-    /*public int numOfFields() {
+    public int numOfFields() {
         return fields.size();
-    }*/
+    }
 }

@@ -1,7 +1,8 @@
-package tp.server;
+package tp.server.structural;
+
+import tp.server.structural.Step;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Move {
     private ArrayList<Step> steps = new ArrayList<Step>();

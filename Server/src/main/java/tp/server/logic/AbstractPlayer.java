@@ -1,7 +1,11 @@
-package tp.server;
+package tp.server.logic;
+
+import tp.server.MoveBuilder;
+import tp.server.structural.Move;
+import tp.server.structural.Pawn;
+import tp.server.structural.Step;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 
 public abstract class AbstractPlayer {

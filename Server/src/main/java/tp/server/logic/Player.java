@@ -1,8 +1,9 @@
-package tp.server;
+package tp.server.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import tp.server.structural.Move;
+import tp.server.structural.Pawn;
 
 import java.util.ArrayList;
 

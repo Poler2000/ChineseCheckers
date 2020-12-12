@@ -1,4 +1,4 @@
-package graphical;
+package org.example.graphical;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,7 @@ public class NetworkGUI extends JPanel{
     private JButton connectButton;
     private JLabel connStatus;
 
-    public NetworkGUI(GUIManager listener){
+    public NetworkGUI(final GUIManager listener){
         super();
         serverAddress = new JTextField("localhost");
         connectButton = new JButton("Połącz");

@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.communication;
 
 public abstract class ServerMsg {
     protected String type;

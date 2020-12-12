@@ -1,18 +1,23 @@
-package tp.server;
+package tp.server.structural;
 
 public class Pawn {
     private Field location;
     private final int owner;
-    private final int id;
+   // private final int id;
 
     private static final Object locker = new Object();
     private static int id_counter = 0;
 
     public Pawn(final Field field, final int owner) {
-        id = assignId();
+       // id = assignId();
         location = field;
         this.owner = owner;
         location.setOccupied(true);
+    }
+
+    public Pawn() {
+        owner = 0;
+      //  id = 0;
     }
 
     public Field getLocation() {
@@ -23,9 +28,9 @@ public class Pawn {
         return owner;
     }
 
-    public int getId() {
+   /* public int getId() {
         return id;
-    }
+    }*/
 
     public void move(Field newLocation) {
         location.setOccupied(false);
@@ -35,7 +40,7 @@ public class Pawn {
 
     private static int assignId() {
         synchronized (locker) {
-            return id_counter++;
+            return ++id_counter;
         }
     }
 }
