@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.Shape;
+import java.awt.Color;
 
 public class FieldGUI extends Renderable{
 
@@ -29,6 +30,7 @@ public class FieldGUI extends Renderable{
     }
 
     public void render(Graphics gra, double scale, double xoffset, double yoffset){
+    	gra.setColor(this.colr);
         ((Graphics2D)gra).draw(getMyShape(scale,xoffset,yoffset));
     }
 }

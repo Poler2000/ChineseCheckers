@@ -15,6 +15,7 @@ public class PawnGUI extends Renderable{
     }
 
     public void render(Graphics gra, double scale, double xoffset, double yoffset){
+    	gra.setColor(this.colr);
         gra.fillOval(  (int)(getAdjustedX(scale)+xoffset-pawnRadius*scale), (int)(getAdjustedY(scale)+yoffset-pawnRadius*scale), (int)(2*pawnRadius*scale), (int)(2*pawnRadius*scale) );
     }
 }

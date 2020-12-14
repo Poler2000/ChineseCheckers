@@ -8,6 +8,7 @@ import tp.client.game.UserEventsHandler;
 import tp.client.structural.*;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 public class GUIManager implements PawnMovementHandler{
 
@@ -87,6 +88,7 @@ public class GUIManager implements PawnMovementHandler{
         pawnMap = new HashMap<PawnGUI, Pawn>();
         for(int i = 0; i < pawns.length; i++){
             PawnGUI temp = new PawnGUI(tileMapRev.get(pawns[i].location).getAdjustedX(1), tileMapRev.get(pawns[i].location).getAdjustedY(1));
+            temp.setColor(Color.getHSBColor((0.37f * pawns[i].playerid), 1.0f, 1.0f));
             pawnMap.put(temp,pawns[i]);
             ret[i] = temp;
         }
