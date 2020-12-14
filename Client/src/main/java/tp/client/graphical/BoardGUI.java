@@ -1,4 +1,4 @@
-package org.example.graphical;
+package tp.client.graphical;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

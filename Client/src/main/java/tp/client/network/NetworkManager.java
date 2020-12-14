@@ -1,7 +1,7 @@
-package network;
+package tp.client.network;
 
-import game.NetworkEventsHandler;
-import structural.*;
+import tp.client.game.NetworkEventsHandler;
+import tp.client.structural.*;
 
 public class NetworkManager {
     private NetworkEventsHandler upstream;

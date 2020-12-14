@@ -1,4 +1,4 @@
-package network;
+package tp.client.network;
 
 public class MoveMsg {
     

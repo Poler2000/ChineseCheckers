@@ -1,9 +1,9 @@
-package game;
+package tp.client.game;
 
 import java.util.*;
-import structural.*;
-import graphical.GUIManager;
-import network.NetworkManager;
+import tp.client.structural.*;
+import tp.client.graphical.GUIManager;
+import tp.client.network.NetworkManager;
 
 
 public class GameManager implements UserEventsHandler, NetworkEventsHandler{

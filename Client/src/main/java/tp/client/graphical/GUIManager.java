@@ -1,12 +1,13 @@
-package org.example.graphical;
+package tp.client.graphical;
 
 
 import java.util.*;
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 
-import org.example.game.UserEventsHandler;
-import org.example.structural.*;
+import tp.client.game.UserEventsHandler;
+import tp.client.structural.*;
+
+import java.awt.BorderLayout;
 
 public class GUIManager implements PawnMovementHandler{
 

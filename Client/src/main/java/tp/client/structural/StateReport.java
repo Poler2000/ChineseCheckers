@@ -1,4 +1,4 @@
-package structural;
+package tp.client.structural;
 
 public class StateReport extends ServerMsg{
     public int currentPlayer;

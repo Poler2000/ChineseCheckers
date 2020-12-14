@@ -1,7 +1,7 @@
-package game;
+package tp.client.game;
 
 import java.util.*;
-import structural.*;
+import tp.client.structural.*;
 
 public class MoveValidator {
     private static int getCityDistance(int[] coords1, int[] coords2){

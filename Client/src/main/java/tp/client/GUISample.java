@@ -1,7 +1,7 @@
-package org.example;
+package tp.client;
 
-import org.example.graphical.GUIManager;
-import org.example.structural.*;
+import tp.client.graphical.GUIManager;
+import tp.client.structural.*;
 
 public class GUISample {
     public static void main(String[] args){

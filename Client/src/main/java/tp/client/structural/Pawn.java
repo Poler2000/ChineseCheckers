@@ -1,4 +1,4 @@
-package org.example.structural;
+package tp.client.structural;
 
 public class Pawn implements Cloneable{
     public int id;

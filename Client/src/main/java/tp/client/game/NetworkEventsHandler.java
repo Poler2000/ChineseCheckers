@@ -1,7 +1,7 @@
-package game;
+package tp.client.game;
 
-import structural.ServerConfig;
-import structural.StateReport;
+import tp.client.structural.ServerConfig;
+import tp.client.structural.StateReport;
 
 public interface NetworkEventsHandler {
     public void handleNewServerCfg(ServerConfig recv);

@@ -1,4 +1,4 @@
-package structural;
+package tp.client.structural;
 
 public class ServerConfig extends ServerMsg{
     public int playersInGame;

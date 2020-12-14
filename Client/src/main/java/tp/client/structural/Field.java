@@ -1,4 +1,4 @@
-package org.example.structural;
+package tp.client.structural;
 
 public class Field {
     public int id;

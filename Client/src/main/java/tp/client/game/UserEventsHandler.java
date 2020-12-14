@@ -1,6 +1,6 @@
-package org.example.game;
+package tp.client.game;
 
-import org.example.structural.Step;
+import tp.client.structural.Step;
 
 public interface UserEventsHandler {
     public boolean handleMovement(Step movement);

@@ -1,4 +1,4 @@
-package structural;
+package tp.client.structural;
 
 public enum GameState {
     UNSTARTABLE,

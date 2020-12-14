@@ -1,4 +1,4 @@
-package org.example.graphical;
+package tp.client.graphical;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
