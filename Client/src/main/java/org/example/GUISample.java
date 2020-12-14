@@ -1,6 +1,7 @@
-import graphical.GUIManager;
+package org.example;
 
-import structural.*;
+import org.example.graphical.GUIManager;
+import org.example.structural.*;
 
 public class GUISample {
     public static void main(String[] args){

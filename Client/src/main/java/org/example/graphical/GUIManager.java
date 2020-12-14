@@ -1,13 +1,12 @@
-package graphical;
-import structural.Field;
-import structural.Pawn;
-import structural.Step;
+package org.example.graphical;
+
 
 import java.util.*;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
-import game.UserEventsHandler;
+import org.example.game.UserEventsHandler;
+import org.example.structural.*;
 
 public class GUIManager implements PawnMovementHandler{
 

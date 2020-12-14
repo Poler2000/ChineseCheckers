@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="org.example.AppTest" time="0.022" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="org.example.AppTest" time="0" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
     <property name="java.specification.version" value="11"/>
     <property name="sun.cpu.isalist" value=""/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/home/poler/DEV/Java/L4/Server/target/test-classes:/home/poler/DEV/Java/L4/Server/target/classes:/home/poler/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/poler/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="java.class.path" value="/home/poler/DEV/Java/L4/Server/target/test-classes:/home/poler/DEV/Java/L4/Server/target/classes:/home/poler/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/poler/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.0/jackson-core-2.12.0.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.12.0/jackson-annotations-2.12.0.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.11.3/jackson-databind-2.11.3.jar:/home/poler/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.5.3/jackson-mapper-asl-1.5.3.jar:/home/poler/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.5.3/jackson-core-asl-1.5.3.jar:"/>
     <property name="java.vm.vendor" value="Ubuntu"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://ubuntu.com/"/>
@@ -16,9 +16,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/poler/DEV/Java/L4/Server/target/surefire/surefirebooter2882629635289278633.jar /home/poler/DEV/Java/L4/Server/target/surefire 2020-12-04T18-22-09_703-jvmRun1 surefire12474545488502657033tmp surefire_09730015617167047755tmp"/>
+    <property name="sun.java.command" value="/home/poler/DEV/Java/L4/Server/target/surefire/surefirebooter15395151236300411079.jar /home/poler/DEV/Java/L4/Server/target/surefire 2020-12-12T12-08-16_893-jvmRun1 surefire11917790670769706828tmp surefire_017046474541552591844tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/home/poler/DEV/Java/L4/Server/target/test-classes:/home/poler/DEV/Java/L4/Server/target/classes:/home/poler/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/poler/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="surefire.test.class.path" value="/home/poler/DEV/Java/L4/Server/target/test-classes:/home/poler/DEV/Java/L4/Server/target/classes:/home/poler/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/poler/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.0/jackson-core-2.12.0.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.12.0/jackson-annotations-2.12.0.jar:/home/poler/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.11.3/jackson-databind-2.11.3.jar:/home/poler/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.5.3/jackson-mapper-asl-1.5.3.jar:/home/poler/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.5.3/jackson-core-asl-1.5.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/poler"/>
     <property name="user.language" value="en"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/poler/DEV/Java/L4/Server/target/surefire/surefirebooter2882629635289278633.jar"/>
+    <property name="surefire.real.class.path" value="/home/poler/DEV/Java/L4/Server/target/surefire/surefirebooter15395151236300411079.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.9.1+1-Ubuntu-0ubuntu1.20.04"/>
     <property name="user.name" value="poler"/>
@@ -57,5 +57,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="org.example.AppTest" time="0.001"/>
+  <testcase name="shouldAnswerWithTrue" classname="org.example.AppTest" time="0"/>
 </testsuite>

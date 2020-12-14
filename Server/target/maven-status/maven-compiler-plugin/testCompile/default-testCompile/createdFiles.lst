@@ -1,0 +1,4 @@
+tp/server/SixPointedStarFactoryTest.class
+tp/server/logic/GameTest.class
+tp/server/structural/MoveTest.class
+tp/server/communication/CommunicationCenterTest.class

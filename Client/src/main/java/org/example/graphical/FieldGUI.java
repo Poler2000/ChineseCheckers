@@ -1,4 +1,4 @@
-package graphical;
+package org.example.graphical;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
