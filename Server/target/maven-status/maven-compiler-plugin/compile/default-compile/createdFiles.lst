@@ -6,7 +6,6 @@ tp/server/communication/GameStateMsg.class
 tp/server/MoveBuilder.class
 tp/server/MapFactory.class
 tp/server/logic/Game.class
-tp/server/communication/ServerCfg.class
 tp/server/structural/Step.class
 tp/server/Filter.class
 tp/server/structural/Coordinates.class
@@ -15,6 +14,7 @@ tp/server/SixPointedStarFactory$2.class
 tp/server/communication/CommunicationCenter$ClientConnector.class
 tp/server/communication/CommunicationCenter.class
 tp/server/structural/Pawn.class
+tp/server/communication/ServerConfig.class
 tp/server/logic/MoveValidator.class
 tp/server/communication/ServerMsg.class
 tp/server/SixPointedStarFactory.class
