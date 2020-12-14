@@ -1,7 +1,7 @@
 package tp.client.network;
 
 public class RegistrationMsg {
-    public String getText(){
-        return "{ \"msgType\": \"register\"}";
+    public String toString(){
+        return "{ \"type\": \"registerMsg\"}";
     }
 }
