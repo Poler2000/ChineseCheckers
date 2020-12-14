@@ -136,7 +136,7 @@ public class GUIManager implements PawnMovementHandler{
     }
 
     public void disableGameStart(boolean iff){
-        userBar.enableEndTurn(iff);
+        userBar.enableStartGame(!iff);
     }
 
     public void setGameLabel(String text){
