@@ -136,4 +136,12 @@ public class GUIManager implements PawnMovementHandler{
     public void disableGameStart(boolean iff){
         userBar.enableEndTurn(iff);
     }
+
+    public void setGameLabel(String text){
+        userBar.setLabel(text);
+    }
+
+    public void setNetworkLabel(String text){
+        networkBar.setConnStatus(text);
+    }
 }
