@@ -26,26 +26,37 @@ public class CommunicationCenter {
 
     public int establishConnections() {
         shouldListenForNewClients = true;
-        int numberOfClients = 0;
+        final int[] numberOfClients = {0};
 
-        while (true) {
-            synchronized (locker) {
-                if(shouldListenForNewClients && numberOfClients < 6) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Socket socket = null;
+                while (true) {
                     try {
-                        Socket socket = serverSocket.accept();
-                        numberOfClients++;
-                        clientConnectors.add(new ClientConnector(socket));
-                        clientConnectors.get(numberOfClients - 1).start();
+                        socket = serverSocket.accept();
                     }
                     catch (IOException e) {
                         e.printStackTrace();
                     }
+                    numberOfClients[0]++;
+                    System.out.println(numberOfClients[0]);
+                    clientConnectors.add(new ClientConnector(socket));
+                    clientConnectors.get(numberOfClients[0] - 1).start();
                 }
-                else {
-                    return numberOfClients;
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+
+        while (true) {
+            synchronized (locker) {
+                if(!(shouldListenForNewClients && numberOfClients[0] < 6)) {
+                   break;
                 }
             }
         }
+        return numberOfClients[0];
     }
 
     public void sendMessageToAll(final String msg) {
@@ -80,6 +91,7 @@ public class CommunicationCenter {
             try {
                 input = new DataInputStream(clientSocket.getInputStream());
                 output = new DataOutputStream(clientSocket.getOutputStream());
+                System.out.println("Client is BORN!");
             } catch (IOException e) {
                 e.printStackTrace();
             }

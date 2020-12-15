@@ -26,7 +26,7 @@ public class PlayerTest {
         move.addStep(new Step(pawns.get(1), pawns.get(2).getLocation()));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        //String expected = "{\"type\":\"GameState\",\"turnOf\":3,\"pawns\":[{\"location\":{\"coord\":{\"x\":-1,\"y\":-2,\"z\":3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":2,\"id\":0},{\"location\":{\"coord\":{\"x\":1,\"y\":2,\"z\":-3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":3,\"id\":1},{\"location\":{\"coord\":{\"x\":7,\"y\":-3,\"z\":-4},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"TOP_RIGHT\"},\"owner\":4,\"id\":2}]}";
+        //String expected = "{\"msgType\":\"GameState\",\"turnOf\":3,\"pawns\":[{\"location\":{\"coord\":{\"x\":-1,\"y\":-2,\"z\":3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":2,\"id\":0},{\"location\":{\"coord\":{\"x\":1,\"y\":2,\"z\":-3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":3,\"id\":1},{\"location\":{\"coord\":{\"x\":7,\"y\":-3,\"z\":-4},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"TOP_RIGHT\"},\"owner\":4,\"id\":2}]}";
 
         String json = null;
         try

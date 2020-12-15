@@ -1,36 +1,32 @@
 package tp.server.structural;
 
-public class Pawn {
+public class Pawn implements Cloneable {
+    private final int id;
     private Field location;
-    private final int owner;
-   // private final int id;
+    private final int playerId;
 
     private static final Object locker = new Object();
     private static int id_counter = 0;
 
-    public Pawn(final Field field, final int owner) {
-       // id = assignId();
+    public Pawn(final Field field, final int playerId) {
         location = field;
-        this.owner = owner;
+        this.playerId = playerId;
         location.setOccupied(true);
+        id = assignId();
     }
 
     public Pawn() {
-        owner = 0;
-      //  id = 0;
+        playerId = 0;
+        id = assignId();
     }
 
     public Field getLocation() {
         return location;
     }
 
-    public int getOwner() {
-        return owner;
+    public int getPlayerId() {
+        return playerId;
     }
-
-   /* public int getId() {
-        return id;
-    }*/
 
     public void move(Field newLocation) {
         location.setOccupied(false);
@@ -38,9 +34,22 @@ public class Pawn {
         location.setOccupied(true);
     }
 
+    public int getId() {
+        return id;
+    }
+
     private static int assignId() {
         synchronized (locker) {
-            return ++id_counter;
+            return id_counter++;
+        }
+    }
+
+    public Pawn clone() {
+        try {
+            return (Pawn)super.clone();
+        }
+        catch (CloneNotSupportedException ex){
+            return null;
         }
     }
 }

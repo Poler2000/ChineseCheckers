@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import tp.server.*;
 import tp.server.communication.CommunicationCenter;
-import tp.server.communication.GameStateMsg;
+import tp.server.communication.StateReport;
 import tp.server.communication.ServerMsg;
+import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
 
@@ -15,12 +16,6 @@ import java.util.ArrayList;
 
 public class Game
 {
-    public enum gameStates {
-        NO_PLAYERS,
-        READY_TO_START,
-        ONGOING,
-        ENDED
-    }
     private boolean isRunning;
     private MoveValidator moveValidator;
     private ArrayList<AbstractPlayer> players;
@@ -28,7 +23,7 @@ public class Game
     private Map map;
     private int numOfPlayers;
     private int currentPlayer = 1;
-    private gameStates gameState = gameStates.NO_PLAYERS;
+    private GameState gameState = GameState.UNSTARTABLE;
 
 
     public static void main(String[] args)
@@ -89,7 +84,7 @@ public class Game
             pawns.addAll(p.getPawns());
         }
 
-        ServerMsg msg = new GameStateMsg(currentPlayer, pawns);
+        ServerMsg msg = new StateReport(currentPlayer, pawns, 0);
         try
         {
             return objectMapper.writeValueAsString(msg);
@@ -114,8 +109,8 @@ public class Game
         String type = null;
         try {
             node = new ObjectMapper().readValue(msg, ObjectNode.class);
-            if (node.has("type")) {
-                type =  node.get("type").asText();
+            if (node.has("msgType")) {
+                type =  node.get("msgType").asText();
             }
         }
         catch (JsonProcessingException e) {
@@ -123,16 +118,16 @@ public class Game
         }
 
         switch (type) {
-            case "registerMsg":
-                if (gameState == gameStates.NO_PLAYERS) {
-                    gameState = gameStates.READY_TO_START;
+            case "register":
+                if (gameState == GameState.UNSTARTABLE) {
+                    gameState = GameState.READY;
                 }
                 break;
-            case "setupMsg":
-                gameState = gameStates.ONGOING;
+            case "setup":
+                gameState = GameState.INPROGRESS;
                 communicationCenter.stopListeningForNewClients();
                 break;
-            case "playerMove":
+            case "move":
                 break;
             default:
                 break;

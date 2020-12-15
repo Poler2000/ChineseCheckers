@@ -24,9 +24,9 @@ public class Map {
 
     public Field getField(final int x, final int y, final int z) {
         for(Field field: fields) {
-            if(field.getCoord().x == x &&
-                field.getCoord().y == y &&
-                field.getCoord().z == z) {
+            if(field.coordinatesAsXYZ().x == x &&
+                field.coordinatesAsXYZ().y == y &&
+                field.coordinatesAsXYZ().z == z) {
                 return field;
             }
         }
@@ -35,7 +35,7 @@ public class Map {
 
     public Field getField(Coordinates coord) {
         for(Field field: fields) {
-            if(field.getCoord().equals(coord)) {
+            if(field.coordinatesAsXYZ().equals(coord)) {
                 return field;
             }
         }

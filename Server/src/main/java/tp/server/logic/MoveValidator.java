@@ -35,15 +35,15 @@ public class MoveValidator {
     }
 
     private boolean isNeighbourValid(Step step) {
-        final Coordinates pCoord = step.getPiece().getLocation().getCoord();
-        final Coordinates lCoord = step.getDestination().getCoord();
+        final Coordinates pCoord = step.getActor().getLocation().coordinatesAsXYZ();
+        final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
         return (Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
                 Math.abs(pCoord.z - lCoord.z)) == 2 && (!step.getDestination().isOccupied());
     }
 
     private boolean isJumpValid(Step step) {
-        final Coordinates pCoord = step.getPiece().getLocation().getCoord();
-        final Coordinates lCoord = step.getDestination().getCoord();
+        final Coordinates pCoord = step.getActor().getLocation().coordinatesAsXYZ();
+        final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
         if ((Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
                 Math.abs(pCoord.z - lCoord.z)) == 4) {
             if ((Math.abs(pCoord.x - lCoord.x) == 0) || (Math.abs(pCoord.y - lCoord.y) == 0) ||

@@ -1,4 +1,8 @@
-/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/GameStateMsgTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/logic/GameTest.java
 /home/poler/DEV/Java/L4/Server/src/test/java/tp/server/SixPointedStarFactoryTest.java
-/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/PlayerTest.java
-/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/ServerCfgMsgTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/communication/CommunicationCenterTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/structural/MoveTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/logic/PlayerTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/communication/ServerConfigMsgTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/communication/GameStateMsgTest.java
+/home/poler/DEV/Java/L4/Server/src/test/java/tp/server/structural/CoordinatesTest.java

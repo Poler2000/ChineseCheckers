@@ -24,7 +24,7 @@ public abstract class AbstractPlayer {
         while (steps.hasNext()) {
             Step step = steps.next();
             for (Pawn pawn : pawns) {
-                if(pawn == step.getPiece()) {
+                if(pawn == step.getActor()) {
                     pawn.move(step.getDestination());
                     break;
                 }

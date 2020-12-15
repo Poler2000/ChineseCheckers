@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class CommunicationCenterTest {
@@ -39,20 +40,33 @@ public class CommunicationCenterTest {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                try
-                {
-                    Thread.sleep(2000);
+                try {
+                    Thread.sleep(1000);
+                    c1.init("localhost", 1410);
+                    c1.sendRegister();
+                    Thread.sleep(100);
+                    c2.init("localhost", 1410);
+                    c2.sendRegister();
+                    Thread.sleep(100);
+                    center.stopListeningForNewClients();
+                    /*c1.sendSetup();
+
+                    while (true) {
+                        Thread.sleep(100);
+                        c1.sendMove();
+                        Thread.sleep(100);
+                        c2.sendMove();
+                    }*/
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                c1.init("localhost", 1410);
-                c2.init("localhost", 1410);
+
             }
         };
         Thread t = new Thread(r);
         t.start();
-        center.establishConnections();
-
+        int n = center.establishConnections();
+        assertEquals(2, n);
     }
 
     @Test

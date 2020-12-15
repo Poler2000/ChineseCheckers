@@ -1,9 +1,9 @@
 package tp.server.communication;
 
 public abstract class ServerMsg {
-    protected String type;
+    protected String msgType;
 
-    public String getType() {
-        return type;
+    public String getMsgType() {
+        return msgType;
     }
 }
