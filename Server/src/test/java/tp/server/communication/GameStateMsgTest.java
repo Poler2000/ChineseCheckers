@@ -19,7 +19,7 @@ public class GameStateMsgTest {
         pawns.add(new Pawn(new Field(-1,-2,3), 2));
         pawns.add(new Pawn(new Field(1,2,-3), 3));
         pawns.add(new Pawn(new Field(7,-3,-4), 4));
-        ServerMsg msg = new StateReport(3, pawns);
+        ServerMsg msg = new StateReport(3, pawns, 0, 1);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String expected = "{\"msgType\":\"GameState\",\"turnOf\":3,\"pawns\":[{\"location\":{\"coord\":{\"x\":-1,\"y\":-2,\"z\":3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":2},{\"location\":{\"coord\":{\"x\":1,\"y\":2,\"z\":-3},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"NONE\"},\"owner\":3},{\"location\":{\"coord\":{\"x\":7,\"y\":-3,\"z\":-4},\"playerHome\":0,\"playerGoal\":0,\"occupied\":true,\"corner\":\"TOP_RIGHT\"},\"owner\":4}]}";

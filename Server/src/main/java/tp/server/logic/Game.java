@@ -84,7 +84,7 @@ public class Game
             pawns.addAll(p.getPawns());
         }
 
-        ServerMsg msg = new StateReport(currentPlayer, pawns, 0);
+        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, 1);
         try
         {
             return objectMapper.writeValueAsString(msg);
