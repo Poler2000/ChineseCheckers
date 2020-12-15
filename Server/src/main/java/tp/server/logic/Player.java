@@ -8,7 +8,7 @@ import tp.server.structural.Pawn;
 import java.util.ArrayList;
 
 public class Player extends AbstractPlayer {
-    private String moveJSON = null;
+    private Move move = null;
 
     public Player(ArrayList<Pawn> pawns) {
         super(pawns);
@@ -16,22 +16,15 @@ public class Player extends AbstractPlayer {
 
     @Override
     public Move proposeMove() {
-        while (moveJSON == null) ;
+        while (move == null) ;
 
-        Move move = null;
-        try
-        {
-            move = new ObjectMapper().readValue(moveJSON, Move.class);
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        moveJSON = null;;
-        return move;
+        Move copy = move;
+        move = null;
+        return copy;
     }
 
     @Override
-    public void setMove(final String move) {
-        moveJSON = move;
+    public void setMove(final Move move) {
+        this.move = move;
     }
 }

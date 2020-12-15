@@ -71,11 +71,11 @@ public class CommunicationCenterTest {
 
     @Test
     public void sendMessageToAllTest() {
-
     }
 
     @Test
     public void sendMessageTest() {
+
     }
 
 }

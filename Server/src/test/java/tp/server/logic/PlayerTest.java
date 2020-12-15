@@ -32,7 +32,7 @@ public class PlayerTest {
         try
         {
             json = objectMapper.writeValueAsString(move);
-            player.setMove(json);
+            player.setMove(move);
             System.out.println(json);
             Move newMove = player.proposeMove();
         }

@@ -36,6 +36,6 @@ public abstract class AbstractPlayer {
         return pawns;
     }
 
-    public void setMove(final String move) {
+    public void setMove(final Move move) {
     }
 }

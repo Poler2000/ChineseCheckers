@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import tp.server.*;
-import tp.server.communication.CommunicationCenter;
-import tp.server.communication.StateReport;
-import tp.server.communication.ServerMsg;
+import tp.server.communication.*;
 import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
@@ -39,7 +37,7 @@ public class Game
 
         try
         {
-            communicationCenter = new CommunicationCenter(5000, this);
+            communicationCenter = new CommunicationCenter(1410, this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -102,10 +100,8 @@ public class Game
     private void end() {
     }
 
-    public void processMessage(final String msg) {
-
-
-        final ObjectNode node;
+    public void processMessage(final String msg, final int fromPlayer) {
+        ObjectNode node = null;
         String type = null;
         try {
             node = new ObjectMapper().readValue(msg, ObjectNode.class);
@@ -117,17 +113,32 @@ public class Game
             e.printStackTrace();
         }
 
+        ObjectMapper mapper = new ObjectMapper();
         switch (type) {
-            case "register":
-                if (gameState == GameState.UNSTARTABLE) {
-                    gameState = GameState.READY;
+            case "registerMsg":
+                numOfPlayers++;
+
+                for(int i = 1; i <= numOfPlayers; i++) {
+                    try {
+                        communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map, i)), i);
+                    }
+                    catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
-            case "setup":
-                gameState = GameState.INPROGRESS;
+            case "setupMsg":
+                int state = -1;
+                if (node.has("setState")) {
+                    state = node.get("setState").asInt();
+                }
+                gameState = GameState.fromInt(state);
                 communicationCenter.stopListeningForNewClients();
                 break;
-            case "move":
+            case "playerMove":
+                ClientMessageParser parser = new ClientMessageParser();
+                Move move = parser.getMove(node.get("steps").asText());
+                players.get(fromPlayer).setMove(move);
                 break;
             default:
                 break;

@@ -22,11 +22,13 @@ public class CommunicationCenter {
         serverSocket = new ServerSocket(port);
         this.game = game;
         active = true;
+        System.out.println("Center Created");
     }
 
     public int establishConnections() {
         shouldListenForNewClients = true;
         final int[] numberOfClients = {0};
+        System.out.println("Center Up and running");
 
         Runnable r = new Runnable() {
             @Override
@@ -34,14 +36,17 @@ public class CommunicationCenter {
                 Socket socket = null;
                 while (true) {
                     try {
+                        System.out.println("Waiting for new client");
                         socket = serverSocket.accept();
+                        System.out.println("Houston, we have connection");
+
                     }
                     catch (IOException e) {
                         e.printStackTrace();
                     }
                     numberOfClients[0]++;
                     System.out.println(numberOfClients[0]);
-                    clientConnectors.add(new ClientConnector(socket));
+                    clientConnectors.add(new ClientConnector(socket, numberOfClients[0]));
                     clientConnectors.get(numberOfClients[0] - 1).start();
                 }
             }
@@ -85,13 +90,14 @@ public class CommunicationCenter {
         private Socket clientSocket;
         private DataInputStream input = null;
         private DataOutputStream output = null;
+        private final int id;
 
-        public ClientConnector(Socket socket) {
+        public ClientConnector(Socket socket, int id) {
             this.clientSocket = socket;
+            this.id = id;
             try {
                 input = new DataInputStream(clientSocket.getInputStream());
                 output = new DataOutputStream(clientSocket.getOutputStream());
-                System.out.println("Client is BORN!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -108,7 +114,7 @@ public class CommunicationCenter {
                     e.printStackTrace();
                 }
                 synchronized (locker) {
-                    game.processMessage(inputLine);
+                    game.processMessage(inputLine, id);
                 }
             }
 
