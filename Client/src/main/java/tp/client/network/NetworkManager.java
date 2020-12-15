@@ -2,77 +2,66 @@ package tp.client.network;
 
 import tp.client.game.NetworkEventsHandler;
 import tp.client.structural.*;
-import java.io.*;
-import java.net.*;
+import org.json.JSONObject;
+import java.util.HashMap;
 
 public class NetworkManager {
     private NetworkEventsHandler upstream;
-    private volatile PrintWriter netOut = null;
+    private ConnMan sock;
+    private HashMap<Integer, Field> lastrefs = new HashMap<Integer, Field>();
 
     public NetworkManager(NetworkEventsHandler handl){
         upstream = handl;
+        sock = new ConnMan(this);
+    }
+    
+    private void updateRefs(Field[] map) {
+    	lastrefs = new HashMap<Integer, Field>();
+    	for (Field elem : map) {
+    		lastrefs.put(elem.id, elem);
+    	}
     }
 
     public void sendGameStart(){
-
+    	SetupMsg msg = new SetupMsg();
+    	sock.send(msg.toString());
     }
     public void sendMove(Step[] move){
-
+    	MoveMsg msg = new MoveMsg(move);
+    	sock.send(msg.toString());
+    }
+    private void sendRegister() {
+    	RegistrationMsg msg = new RegistrationMsg();
+    	sock.send(msg.toString());
     }
     
     protected void handleIncoming(String message) {
-    	
+    	JSONObject incoming = new JSONObject(message);
+    	if (incoming.has("type")) {
+    		if (incoming.getString("type").equals("config")) {
+    			ServerConfig newConfig = ConfigParser.parse(incoming);
+    			updateRefs(newConfig.map);
+    			upstream.handleNewServerCfg(newConfig);
+    		}
+    		if (incoming.getString("type").equals("gameState")) {
+    			StateReport newState = StateParser.parse(incoming, lastrefs);
+    			upstream.handleNewGameState(newState);
+    		}
+    	}
     }
     
-    protected boolean sendMessage(String message) {
-    	if (netOut != null) {
-    		netOut.print(message);
-    		netOut.flush();
+    protected void connStateChanged(boolean newstate) {
+    	if (newstate) {
+    		sendRegister();
+    		upstream.handleServerConnect();
     	}
-    	return false;
+    	else {
+    		upstream.handleServerDisconnect();
+    	}
     }
-    public boolean connect(String addr){
-    	if (netOut != null) {
-    		netOut.close();
-    	}
-    	try (
-			Socket serverSock = new Socket(addr, 1410);
-			BufferedReader netIn = new BufferedReader(new InputStreamReader(serverSock.getInputStream()));
-    			
-		){
-			netOut = new PrintWriter(serverSock.getOutputStream(), true);
-    		(new Thread() {
-    			public void run() {
-    				String completeMessage = "";
-    				String inputReceived;
-    				try {
-    				while ((inputReceived = netIn.readLine()) != null) {
-    					if (inputReceived.equals("MessageTerminated")) {
-    						handleIncoming(completeMessage);
-    						completeMessage = "";
-    					}
-    					else {
-    						completeMessage += inputReceived;
-    					}
-    				}
-    				}
-    				catch (IOException ex) {
-    					
-    				}
-    			}
-    		}).start();
-    		
-    	}
-    	catch (UnknownHostException e) {
-    		
-    	}
-    	catch (IOException e) {
-    		
-    	}
-    	finally {
-    		netOut.close();
-    	}
-        return false;
+    
+    public void connect(String addr){
+    	sock.connect(addr);
     }
 
 }

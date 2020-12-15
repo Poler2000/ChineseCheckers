@@ -62,12 +62,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
 
     public void handleServerConnReq(String addr){
         gui.setNetworkLabel("Connecting");
-        if (network.connect(addr)){
-            gui.setNetworkLabel("Connected");
-        }
-        else{
-            gui.setNetworkLabel("Disconnected");
-        }
+        network.connect(addr);
     }
 
     public void handleNewServerCfg(ServerConfig recv){
@@ -114,5 +109,9 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
         gui.setNetworkLabel("Disconnected");
         gui.disableTurn(true);
         currentState = GameState.UNKNOWN;
+    }
+    
+    public void handleServerConnect(){
+        gui.setNetworkLabel("Connected");
     }
 }

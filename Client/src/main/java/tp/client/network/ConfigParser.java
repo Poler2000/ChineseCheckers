@@ -6,10 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class ConfigParser{
-	public static ServerConfig parse(String json) {
+	public static ServerConfig parse(JSONObject source) {
 		try {
 			ServerConfig ret = new ServerConfig();
-			JSONObject source = new JSONObject(json);
 			ret.playersInGame = source.getInt("players");
 			ret.gamestate = GameState.fromInt(source.getInt("gamestate"));
 			JSONArray fields = source.getJSONArray("map");

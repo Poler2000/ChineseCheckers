@@ -62,7 +62,7 @@ public class BoardGUI extends JPanel{
         return draggedPawn;
     }
 
-    public boolean pickUpDisabled = false;
+    public volatile boolean pickUpDisabled = false;
 
     private void setupListeners(){
         addMouseListener(new MouseAdapter() {

@@ -7,10 +7,9 @@ import org.json.JSONException;
 import java.util.Map;
 
 public class StateParser {
-	public static StateReport parse(String json, Map<Integer, Field> frefs) {
+	public static StateReport parse(JSONObject source, Map<Integer, Field> frefs) {
 		try {
 			StateReport ret = new StateReport();
-			JSONObject source = new JSONObject(json);
 			ret.currentPlayer = source.getInt("turnOf");
 			JSONArray pawns = source.getJSONArray("pawns");
 			ret.deployment = new Pawn[pawns.length()];
