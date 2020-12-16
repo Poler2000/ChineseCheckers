@@ -41,13 +41,13 @@ public class CommunicationCenterTest {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                     c1.init("localhost", 1410);
                     c1.sendRegister();
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                     c2.init("localhost", 1410);
                     c2.sendRegister();
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                     center.stopListeningForNewClients();
                     /*c1.sendSetup();
 

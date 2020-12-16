@@ -3,8 +3,10 @@ package tp.server.logic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import tp.server.*;
 import tp.server.communication.*;
+import tp.server.map.Map;
+import tp.server.map.MapFactory;
+import tp.server.map.SixPointedStarFactory;
 import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
@@ -12,8 +14,7 @@ import tp.server.structural.Pawn;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Game
-{
+public class Game  {
     private boolean isRunning;
     private MoveValidator moveValidator;
     private ArrayList<AbstractPlayer> players;
@@ -21,11 +22,10 @@ public class Game
     private Map map;
     private int numOfPlayers;
     private int currentPlayer = 1;
-    private GameState gameState = GameState.UNSTARTABLE;
+    private GameState gameState;
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Game game = new Game();
 
         game.init();
@@ -33,10 +33,15 @@ public class Game
         game.end();
     }
 
+    public Game() {
+        isRunning = true;
+        players = new ArrayList<>();
+        gameState = GameState.UNSTARTABLE;
+    }
+
     private void init() {
 
-        try
-        {
+        try {
             communicationCenter = new CommunicationCenter(1410, this);
         }
         catch (IOException e) {
@@ -45,19 +50,19 @@ public class Game
 
         int numOfBots = 0;
         numOfPlayers = communicationCenter.establishConnections();
-        if (numOfPlayers == 1 || numOfPlayers == 5) {
-            numOfPlayers++;
-            numOfBots++;
-        }
+
         MapFactory mapFactory = new SixPointedStarFactory();
         map = mapFactory.createMap(numOfPlayers);
-        for(int i = 1; i <= numOfPlayers - numOfBots; i++) {
+
+        for(int i = 1; i <= numOfPlayers - numOfBots && i < 7; i++) {
             players.add(new Player(mapFactory.createPawns(i, numOfPlayers)));
         }
+
         if (numOfBots > 0) {
             players.add(new Bot(mapFactory.createPawns(numOfPlayers, numOfPlayers)));
         }
 
+        moveValidator = new MoveValidator(map);
     }
 
     private void run() {
@@ -143,6 +148,5 @@ public class Game
             default:
                 break;
         }
-
     }
 }

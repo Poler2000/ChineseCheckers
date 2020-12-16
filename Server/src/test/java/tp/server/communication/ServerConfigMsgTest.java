@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import tp.server.Map;
-import tp.server.SixPointedStarFactory;
-import tp.server.logic.Game;
+import tp.server.map.Map;
+import tp.server.map.SixPointedStarFactory;
 import tp.server.structural.GameState;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +26,6 @@ public class ServerConfigMsgTest {
             json = objectMapper.writeValueAsString(msg);
             JsonNode rootNode = objectMapper.readTree(json);
 
-           // System.out.println(rootNode.path("map").equals("") ? "null" : "not null");
             Map newMap = objectMapper.convertValue(rootNode.path("map"), Map.class);
             assertEquals(121, newMap.numOfFields());
 

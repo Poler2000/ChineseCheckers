@@ -1,7 +1,6 @@
 package tp.server.communication;
 
-import tp.server.logic.Game;
-import tp.server.Map;
+import tp.server.map.Map;
 import tp.server.structural.GameState;
 
 public class ServerConfig extends ServerMsg {

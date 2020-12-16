@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.map;
 
 import tp.server.structural.Coordinates;
 

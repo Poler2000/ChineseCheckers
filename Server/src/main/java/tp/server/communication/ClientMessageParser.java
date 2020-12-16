@@ -3,7 +3,6 @@ package tp.server.communication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import tp.server.Map;
 import tp.server.structural.Move;
 
 public class ClientMessageParser {

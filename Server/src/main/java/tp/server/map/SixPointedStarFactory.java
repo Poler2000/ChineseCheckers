@@ -1,8 +1,7 @@
-package tp.server;
+package tp.server.map;
 
 import tp.server.structural.Field;
 import tp.server.structural.Pawn;
-import tp.server.Corners;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,7 +33,6 @@ public class SixPointedStarFactory implements MapFactory{
     public ArrayList<Pawn> createPawns(int playerId, int numOfPlayers) {
         ArrayList<Pawn> pawns = new ArrayList<>();
 
-        System.out.println("Hello");
         if (playerId == 1 && numOfPlayers != 4) {
             for (int x = 1; x <= 4; x++) {
                 for (int y = 4; y > 4 - x; y--) {
@@ -99,7 +97,7 @@ public class SixPointedStarFactory implements MapFactory{
         Iterator<Field> it;
         switch (numOfPLayers) {
             case 2:
-                it = map.getMatchingFields(new Filter<Field> () {
+                it = map.getMatchingFields(new Filter<Field>() {
                     @Override
                     public boolean match(Field field) {
                         return Corners.determineCorner(field.coordinatesAsXYZ()) == Corners.TOP ||

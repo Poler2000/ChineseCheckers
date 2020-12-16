@@ -2,7 +2,7 @@ package tp.server.tmp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import tp.server.Map;
+import tp.server.map.Map;
 import tp.server.logic.AbstractPlayer;
 import tp.server.structural.Move;
 import tp.server.structural.Step;
@@ -12,7 +12,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 public class FakeClient {
     private Socket socket = null;

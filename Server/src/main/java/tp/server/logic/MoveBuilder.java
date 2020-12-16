@@ -1,4 +1,4 @@
-package tp.server;
+package tp.server.logic;
 
 import tp.server.structural.Move;
 

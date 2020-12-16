@@ -1,8 +1,5 @@
-tp/server/logic/Game$gameStates.class
 tp/server/structural/Field.class
 tp/server/SixPointedStarFactory$1.class
-tp/server/structural/Field$Corners.class
-tp/server/communication/GameStateMsg.class
 tp/server/MoveBuilder.class
 tp/server/MapFactory.class
 tp/server/logic/Game.class
