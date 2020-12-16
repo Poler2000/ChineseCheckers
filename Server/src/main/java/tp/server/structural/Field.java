@@ -72,7 +72,7 @@ public class Field implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         Field f = (Field)obj;
         return Arrays.equals(coordinates, f.coordinates) &&
                 id == f.id &&

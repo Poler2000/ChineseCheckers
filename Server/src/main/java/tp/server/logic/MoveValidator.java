@@ -1,6 +1,6 @@
 package tp.server.logic;
 
-import tp.server.Map;
+import tp.server.map.Map;
 import tp.server.structural.Coordinates;
 import tp.server.structural.Move;
 import tp.server.structural.Step;

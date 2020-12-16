@@ -1,23 +1,30 @@
-package tp.server;
+package tp.server.map;
 
 import tp.server.structural.Field;
 import tp.server.structural.Pawn;
-import tp.server.Corners;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Creates map with six printed star shape.
+ * It supports 2,3,4 or 6 players
+ */
 public class SixPointedStarFactory implements MapFactory{
-    Map map;
+    private Map map;
+
     @Override
-    public Map createMap(int numOfPLayers) {
+    public Map createMap(final int numOfPLayers) {
         map = new Map();
 
+        // center, top-left, top-right and bottom corner of map
         for (int x = -4; x <= 8; x++) {
             for (int y = -4; y <= 4 - x; y++) {
                 map.addField(new Field(x, y, -(x + y)));
             }
         }
+
+        // bottom,-left, bottom-right and top corner of map
         for (int x = -8; x <= 4; x++) {
             for (int y = 4; y >= -4 - x; y--) {
                 if ((Math.abs(x) > 4 ||  Math.abs(y) > 4) || x + y > 4) {
@@ -34,7 +41,6 @@ public class SixPointedStarFactory implements MapFactory{
     public ArrayList<Pawn> createPawns(int playerId, int numOfPlayers) {
         ArrayList<Pawn> pawns = new ArrayList<>();
 
-        System.out.println("Hello");
         if (playerId == 1 && numOfPlayers != 4) {
             for (int x = 1; x <= 4; x++) {
                 for (int y = 4; y > 4 - x; y--) {
@@ -94,12 +100,15 @@ public class SixPointedStarFactory implements MapFactory{
         return null;
     }
 
+    /**
+     * Sets correct goals for given number of players
+     * @param numOfPLayers
+     */
     private void setupCorners(final int numOfPLayers) {
-
         Iterator<Field> it;
         switch (numOfPLayers) {
             case 2:
-                it = map.getMatchingFields(new Filter<Field> () {
+                it = map.getMatchingFields(new Filter<Field>() {
                     @Override
                     public boolean match(Field field) {
                         return Corners.determineCorner(field.coordinatesAsXYZ()) == Corners.TOP ||
@@ -134,7 +143,7 @@ public class SixPointedStarFactory implements MapFactory{
                     Field f = it.next();
                     f.setPlayerGoal(Corners.determineCorner(f.coordinatesAsXYZ()) == Corners.TOP_LEFT  ? 3 :
                             (Corners.determineCorner(f.coordinatesAsXYZ()) == Corners.TOP_RIGHT ? 4 :
-                                    (Corners.determineCorner(f.coordinatesAsXYZ()) == Corners.BOTTOM_RIGHT ? 1 : 2)));
+                            (Corners.determineCorner(f.coordinatesAsXYZ()) == Corners.BOTTOM_RIGHT ? 1 : 2)));
                 }
                 break;
             case 6:

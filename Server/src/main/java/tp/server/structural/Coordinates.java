@@ -4,9 +4,9 @@ package tp.server.structural;
  * Simple data structure to represent cube coordinates
  */
 public class Coordinates {
-    public int x;
-    public int y;
-    public int z;
+    public final int x;
+    public final int y;
+    public final int z;
 
     public Coordinates(int x, int y, int z) {
         this.x = x;
@@ -14,7 +14,11 @@ public class Coordinates {
         this.z = z;
     }
 
-    public Coordinates() {}
+    public Coordinates() {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
 
     @Override
     public boolean equals(Object obj) {

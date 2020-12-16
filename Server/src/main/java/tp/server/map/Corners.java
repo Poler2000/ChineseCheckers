@@ -1,7 +1,11 @@
-package tp.server;
+package tp.server.map;
 
 import tp.server.structural.Coordinates;
 
+/**
+ * Enum specifies corners of six pointed star map.
+ * It is used during it's creation
+ */
 public enum Corners {
     NONE,
     TOP,
@@ -11,7 +15,12 @@ public enum Corners {
     BOTTOM_RIGHT,
     BOTTOM;
 
-    public static Corners determineCorner(Coordinates coord) {
+    /**
+     * determines corner based on given coordinates
+     * @param coord coordinates to check
+     * @return corner of map
+     */
+    public static Corners determineCorner(final Coordinates coord) {
         if (coord.z < -4) {
             return Corners.TOP;
         }

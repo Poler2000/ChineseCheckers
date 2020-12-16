@@ -1,6 +1,5 @@
 package tp.server.logic;
 
-import tp.server.MoveBuilder;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
 import tp.server.structural.Step;
@@ -36,6 +35,6 @@ public abstract class AbstractPlayer {
         return pawns;
     }
 
-    public void setMove(final String move) {
+    public void setMove(final Move move) {
     }
 }
