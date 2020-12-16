@@ -75,7 +75,6 @@ public class ConnMan {
 					try {
 						synchronized(connLock) {
 							netSock = new Socket(addr, 1410);
-
 							netIn = new BufferedReader(new InputStreamReader(netSock.getInputStream()));
 							netOut = new PrintWriter(netSock.getOutputStream(), true);
 						}
