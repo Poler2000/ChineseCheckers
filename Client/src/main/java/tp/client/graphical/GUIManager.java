@@ -20,6 +20,9 @@ public class GUIManager implements PawnMovementHandler{
     private UserEventsHandler upstream;
     private ActionsGUI userBar;
     private NetworkGUI networkBar;
+    
+    private Object pawnLock = new Object();
+    private Object tileLock = new Object();
 
 
 
@@ -53,14 +56,15 @@ public class GUIManager implements PawnMovementHandler{
     }
 
     public void setMap(Field[] map){
-
-        tileMap = new HashMap<FieldGUI, Field>();
-        tileMapRev = new HashMap<Field, FieldGUI>();
-        for (Field tile : map){
-            FieldGUI adapted = new FieldGUI(getOrthoX(tile.coordinates),getOrthoY(tile.coordinates));
-            tileMap.put(adapted, tile);
-            tileMapRev.put(tile,adapted);
-        }
+    	synchronized(tileLock) {
+	        tileMap = new HashMap<FieldGUI, Field>();
+	        tileMapRev = new HashMap<Field, FieldGUI>();
+	        for (Field tile : map){
+	            FieldGUI adapted = new FieldGUI(getOrthoX(tile.coordinates),getOrthoY(tile.coordinates));
+	            tileMap.put(adapted, tile);
+	            tileMapRev.put(tile,adapted);
+	        }
+    	}
 
         int maxspan = 1;
         for (Field f : tileMap.values()){
@@ -85,16 +89,20 @@ public class GUIManager implements PawnMovementHandler{
 
     public void setPawns(Pawn[] pawns, int myPID){
         PawnGUI[] ret = new PawnGUI[pawns.length];
-        pawnMap = new HashMap<PawnGUI, Pawn>();
-        for(int i = 0; i < pawns.length; i++){
-            PawnGUI temp = new PawnGUI(tileMapRev.get(pawns[i].location).getAdjustedX(1), tileMapRev.get(pawns[i].location).getAdjustedY(1));
-            temp.setColor(Color.getHSBColor((0.37f * pawns[i].playerid), 1.0f, 1.0f));
-            if (myPID != pawns[i].playerid) {
-            	temp.untouchable = true;
-            }
-            pawnMap.put(temp,pawns[i]);
-            ret[i] = temp;
-        }
+    	synchronized(pawnLock) {
+    		synchronized(tileLock) {
+		        pawnMap = new HashMap<PawnGUI, Pawn>();
+		        for(int i = 0; i < pawns.length; i++){
+		            PawnGUI temp = new PawnGUI(tileMapRev.get(pawns[i].location).getAdjustedX(1), tileMapRev.get(pawns[i].location).getAdjustedY(1));
+		            temp.setColor(Color.getHSBColor((0.37f * pawns[i].playerid), 1.0f, 1.0f));
+		            if (myPID != pawns[i].playerid) {
+		            	temp.untouchable = true;
+		            }
+		            pawnMap.put(temp,pawns[i]);
+		            ret[i] = temp;
+		        }
+    		}
+    	}
         mainView.setPawns(ret);
     }
 
@@ -106,9 +114,20 @@ public class GUIManager implements PawnMovementHandler{
     public boolean handlePawnMovement(PawnGUI piece, FieldGUI dest){
         if (upstream != null){
             Step newSte = new Step();
-            newSte.actor =pawnMap.get( piece);
-            newSte.destination = tileMap.get(dest);
-            return upstream.handleMovement(newSte);
+            synchronized(upstream.getMapLock()) {
+	        	synchronized(pawnLock) {
+	        		synchronized(tileLock) {
+			            newSte.actor =pawnMap.get( piece);
+			            newSte.destination = tileMap.get(dest);
+			            if (newSte.actor != null && newSte.destination != null) {
+			            	return upstream.handleMovement(newSte);
+			            }
+			            else {
+			            	return false;
+			            }
+	        		}
+	        	}
+            }
         }
         else{
             return true;

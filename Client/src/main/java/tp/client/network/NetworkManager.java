@@ -42,12 +42,16 @@ public class NetworkManager {
     			//System.out.println("parsing config");
     			ServerConfig newConfig = ConfigParser.parse(incoming);
     			updateRefs(newConfig.map);
-    			upstream.handleNewServerCfg(newConfig);
+    			if (newConfig != null) {
+    				upstream.handleNewServerCfg(newConfig);
+    			}
     		}
     		if (incoming.getString("type").equals("gameState")) {
     			//System.out.println("parsing state");
     			StateReport newState = StateParser.parse(incoming, lastrefs);
-    			upstream.handleNewGameState(newState);
+    			if (newState != null) {
+    				upstream.handleNewGameState(newState);
+    			}
     		}
     	}
     }

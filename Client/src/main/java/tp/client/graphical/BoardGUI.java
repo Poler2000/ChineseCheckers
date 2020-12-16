@@ -84,8 +84,10 @@ public class BoardGUI extends JPanel{
             }
             public void mouseReleased(MouseEvent ev){
                 if (getDraggedPiece() != null){
+                	boolean foundDest = false;
                     for (FieldGUI target : fields){
                         if (target.checkCollision(ev.getX(), ev.getY(), getScale(), getWidth()/2, getHeight()/2)){
+                        	foundDest = true;
                             if (getMovementHandler() != null){
                                 if (getMovementHandler().handlePawnMovement(getDraggedPiece(), target)){
                                     getDraggedPiece().setCoords(target.getAdjustedX(1), target.getAdjustedY(1));
@@ -96,6 +98,9 @@ public class BoardGUI extends JPanel{
                                 break;
                             }
                         }
+                    }
+                    if (!foundDest) {
+                    	getDraggedPiece().setCoords(originalPawnX, originalPawnY);
                     }
                     draggedPawn = null;
                     repaint();

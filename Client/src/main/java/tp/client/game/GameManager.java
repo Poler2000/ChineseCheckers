@@ -12,13 +12,15 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     private NetworkManager network;
 
 
-    private int myPID = -1;
-    private int currentPlayer = 0;
-    private GameState currentState = GameState.UNKNOWN;
+    private volatile int myPID = -1;
+    private volatile int currentPlayer = 0;
+    private volatile GameState currentState = GameState.UNKNOWN;
     private Field[] currentMap = new Field[]{};
-    private Pawn[] currentDeployment = new Pawn[]{};
+    private volatile Pawn[] currentDeployment = new Pawn[]{};
 
     private List<Step> moveInProgress;
+    
+    public Object stateLock = new Object();
 
     public GameManager(){
         gui = new GUIManager();
@@ -32,6 +34,8 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
                 moveInProgress = new ArrayList<Step>();
             }
             moveInProgress.add(movement);
+
+
             if (MoveValidator.validate(moveInProgress, currentDeployment)){
                 return true;
             }
@@ -39,6 +43,8 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
                 moveInProgress.remove(movement);
                 return false;
             }
+
+
         }
         else{
             return false;
@@ -89,8 +95,12 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     public void handleNewGameState(StateReport recv){
         //myPID = recv.toPlayerID;
         currentPlayer = recv.currentPlayer;
-        currentDeployment = recv.deployment;
-        gui.setPawns(currentDeployment, myPID);
+
+        synchronized(stateLock) {
+	        gui.setPawns(recv.deployment, myPID);
+	    	currentDeployment = recv.deployment;
+        }
+
 
         if (recv.wonPlayer != 0){
             gui.setGameLabel("Wygrał gracz " + recv.wonPlayer);
@@ -116,5 +126,9 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     
     public void handleServerConnect(){
         gui.setNetworkLabel("Connected");
+    }
+    
+    public Object getMapLock() {
+    	return stateLock;
     }
 }
