@@ -39,11 +39,13 @@ public class NetworkManager {
     	JSONObject incoming = new JSONObject(message);
     	if (incoming.has("type")) {
     		if (incoming.getString("type").equals("config")) {
+    			//System.out.println("parsing config");
     			ServerConfig newConfig = ConfigParser.parse(incoming);
     			updateRefs(newConfig.map);
     			upstream.handleNewServerCfg(newConfig);
     		}
     		if (incoming.getString("type").equals("gameState")) {
+    			//System.out.println("parsing state");
     			StateReport newState = StateParser.parse(incoming, lastrefs);
     			upstream.handleNewGameState(newState);
     		}

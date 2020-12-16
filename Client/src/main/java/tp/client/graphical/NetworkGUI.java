@@ -12,7 +12,7 @@ public class NetworkGUI extends JPanel{
         super();
         serverAddress = new JTextField("localhost");
         connectButton = new JButton("Połącz");
-        connStatus = new JLabel("Status nieznany");
+        connStatus = new JLabel("Disconnected");
         add(serverAddress);
         add(connectButton);
         add(connStatus);

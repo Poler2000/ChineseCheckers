@@ -83,12 +83,15 @@ public class GUIManager implements PawnMovementHandler{
 
     }
 
-    public void setPawns(Pawn[] pawns){
+    public void setPawns(Pawn[] pawns, int myPID){
         PawnGUI[] ret = new PawnGUI[pawns.length];
         pawnMap = new HashMap<PawnGUI, Pawn>();
         for(int i = 0; i < pawns.length; i++){
             PawnGUI temp = new PawnGUI(tileMapRev.get(pawns[i].location).getAdjustedX(1), tileMapRev.get(pawns[i].location).getAdjustedY(1));
             temp.setColor(Color.getHSBColor((0.37f * pawns[i].playerid), 1.0f, 1.0f));
+            if (myPID != pawns[i].playerid) {
+            	temp.untouchable = true;
+            }
             pawnMap.put(temp,pawns[i]);
             ret[i] = temp;
         }

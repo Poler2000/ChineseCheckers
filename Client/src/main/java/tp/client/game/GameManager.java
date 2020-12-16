@@ -23,6 +23,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     public GameManager(){
         gui = new GUIManager();
         network = new NetworkManager(this);
+        gui.setUserEventsHandler(this);
     }
 
     public boolean handleMovement(Step movement){
@@ -52,11 +53,13 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
 
     public void handleTurnEndReq(){
         if (currentPlayer == myPID && currentState == GameState.INPROGRESS){
+        	gui.disableTurn(true);
             if (moveInProgress == null){
                 moveInProgress = new ArrayList<Step>();
             }
             Step[] moveToSend = moveInProgress.toArray(new Step[0]);
             network.sendMove(moveToSend);
+            moveInProgress = null;
         }
     }
 
@@ -84,10 +87,10 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     }
 
     public void handleNewGameState(StateReport recv){
-        myPID = recv.toPlayerID;
+        //myPID = recv.toPlayerID;
         currentPlayer = recv.currentPlayer;
         currentDeployment = recv.deployment;
-        gui.setPawns(currentDeployment);
+        gui.setPawns(currentDeployment, myPID);
 
         if (recv.wonPlayer != 0){
             gui.setGameLabel("Wygrał gracz " + recv.wonPlayer);
@@ -95,7 +98,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
         }
         else{
             if (recv.currentPlayer == recv.toPlayerID){
-                gui.setGameLabel("Twoja tura");
+                gui.setGameLabel("Twoja tura (Gracz " + recv.toPlayerID + ")");
                 gui.disableTurn(false);
             }
             else{

@@ -32,7 +32,9 @@ public class ConnMan {
 	public void send(String msg) {
 		synchronized(connLock) {
 			if (netSock != null && connected) {
+				//System.out.println("NetOut: " + msg);
 				netOut.print(msg + "\nMessageTerminated\n");
+				netOut.flush();
 			}
 		}
 	}
@@ -85,6 +87,7 @@ public class ConnMan {
 						String inputReceived;
 						
 						while ((inputReceived = netIn.readLine()) != null) {
+							//System.out.println("NetInput: " + inputReceived);
 							if (inputReceived.equals("MessageTerminated")) {
 								onMessage(completeMessage);
 								completeMessage = "";

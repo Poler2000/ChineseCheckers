@@ -31,6 +31,6 @@ public class GUISample {
         pieces[1] = sample2;
 
         mai.setMap(map );
-        mai.setPawns(pieces);
+        mai.setPawns(pieces, 1);
     }
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 public class PawnGUI extends Renderable{
     //pawn radius where the hex field has a side length of 1
     private static double pawnRadius = 0.75;
+    public boolean untouchable = false;
 
     public PawnGUI(double x, double y){
         setCoords(x,y);
