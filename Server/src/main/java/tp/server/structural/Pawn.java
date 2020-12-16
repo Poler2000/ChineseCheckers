@@ -1,5 +1,8 @@
 package tp.server.structural;
 
+/**
+ * Single pawn with it's location id and ownerId
+ */
 public class Pawn implements Cloneable {
     private final int id;
     private Field location;
@@ -28,6 +31,10 @@ public class Pawn implements Cloneable {
         return playerId;
     }
 
+    /**
+     * changes current location to another
+     * @param newLocation new location to move to
+     */
     public void move(Field newLocation) {
         location.setOccupied(false);
         location = newLocation;

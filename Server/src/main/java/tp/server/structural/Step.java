@@ -1,5 +1,8 @@
 package tp.server.structural;
 
+/**
+ * Represents single change in pawn's position
+ */
 public class Step {
     private final Pawn actor;
     private final Field destination;

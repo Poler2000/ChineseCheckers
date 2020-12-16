@@ -1,12 +1,20 @@
 package tp.server.structural;
 
+/**
+ * Represents states that game can be in.
+ * Possibilities are:
+ * UNSTARTABLE,
+ * READY,
+ * INPROGRESS,
+ * UNKNOWN
+ */
 public enum GameState {
     UNSTARTABLE,
     READY,
     INPROGRESS,
     UNKNOWN;
 
-    public static GameState fromInt(int n) {
+    public static GameState fromInt(final int n) {
         switch (n) {
             case 0:
                 return GameState.UNSTARTABLE;
