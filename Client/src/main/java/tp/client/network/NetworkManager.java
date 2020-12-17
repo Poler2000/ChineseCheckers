@@ -2,6 +2,8 @@ package tp.client.network;
 
 import tp.client.game.NetworkEventsHandler;
 import tp.client.structural.*;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 
@@ -36,6 +38,7 @@ public class NetworkManager {
     }
     
     protected void handleIncoming(String message) {
+    	try {
     	JSONObject incoming = new JSONObject(message);
     	if (incoming.has("type")) {
     		if (incoming.getString("type").equals("config")) {
@@ -53,6 +56,10 @@ public class NetworkManager {
     				upstream.handleNewGameState(newState);
     			}
     		}
+    	}
+    	}
+    	catch (JSONException ex) {
+    		
     	}
     }
     

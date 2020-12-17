@@ -33,7 +33,7 @@ public class ConnMan {
 		synchronized(connLock) {
 			if (netSock != null && connected) {
 				//System.out.println("NetOut: " + msg);
-				netOut.print(msg + "\nMessageTerminated\n");
+				netOut.print(msg + "\r\nMessageTerminated\r\n");
 				netOut.flush();
 			}
 		}
