@@ -7,6 +7,7 @@ import tp.server.communication.*;
 import tp.server.map.Map;
 import tp.server.map.MapFactory;
 import tp.server.map.SixPointedStarFactory;
+import tp.server.structural.Field;
 import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
@@ -128,7 +129,9 @@ public class Game  {
                 }
                 for(int i = 1; i <= numOfPlayers; i++) {
                     try {
-                        communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map, i)), i);
+                        MapFactory mapFactory = new SixPointedStarFactory();
+                        Map tmpMap = mapFactory.createEmptyMap();
+                        communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, tmpMap.getFields(), i)), i);
                     }
                     catch (JsonProcessingException e) {
                         e.printStackTrace();

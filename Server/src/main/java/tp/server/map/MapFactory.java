@@ -9,5 +9,6 @@ import java.util.ArrayList;
  */
 public interface MapFactory {
     public Map createMap(final int numOfPLayers);
+    public Map createEmptyMap();
     public ArrayList<Pawn> createPawns(final int playerId, final int numOfPlayers);
 }

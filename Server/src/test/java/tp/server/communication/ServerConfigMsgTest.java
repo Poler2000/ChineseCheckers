@@ -16,7 +16,7 @@ public class ServerConfigMsgTest {
     public void toJSONTest()
     {
         Map map = (new SixPointedStarFactory()).createMap(3);
-        ServerMsg msg = new ServerConfig(3, GameState.INPROGRESS, map, 3);
+        ServerMsg msg = new ServerConfig(3, GameState.INPROGRESS, map.getFields(), 3);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = null;
