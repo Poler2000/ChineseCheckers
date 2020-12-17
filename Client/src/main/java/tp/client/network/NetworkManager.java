@@ -8,13 +8,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class NetworkManager {
-    private NetworkEventsHandler upstream;
+    private NetworkEventsHandler upstream = null;
     private ConnMan sock;
     private HashMap<Integer, Field> lastrefs = new HashMap<Integer, Field>();
 
-    public NetworkManager(NetworkEventsHandler handl){
-        upstream = handl;
+    public NetworkManager(){
         sock = new ConnMan(this);
+    }
+    
+    public void setNetworkEventsHandler(NetworkEventsHandler handl) {
+    	upstream = handl;
     }
     
     private void updateRefs(Field[] map) {
@@ -45,14 +48,14 @@ public class NetworkManager {
     			//System.out.println("parsing config");
     			ServerConfig newConfig = ConfigParser.parse(incoming);
     			updateRefs(newConfig.map);
-    			if (newConfig != null) {
+    			if (newConfig != null && upstream != null) {
     				upstream.handleNewServerCfg(newConfig);
     			}
     		}
     		if (incoming.getString("type").equals("gameState")) {
     			//System.out.println("parsing state");
     			StateReport newState = StateParser.parse(incoming, lastrefs);
-    			if (newState != null) {
+    			if (newState != null && upstream != null) {
     				upstream.handleNewGameState(newState);
     			}
     		}
@@ -66,10 +69,14 @@ public class NetworkManager {
     protected void connStateChanged(boolean newstate) {
     	if (newstate) {
     		sendRegister();
-    		upstream.handleServerConnect();
+    		if (upstream != null) {
+    			upstream.handleServerConnect();
+    		}
     	}
     	else {
-    		upstream.handleServerDisconnect();
+    		if (upstream != null) {
+    			upstream.handleServerDisconnect();
+    		}
     	}
     }
     

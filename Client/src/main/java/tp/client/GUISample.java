@@ -1,4 +1,4 @@
-package tp.client;
+/*package tp.client;
 
 import tp.client.graphical.GUIManager;
 import tp.client.structural.*;
@@ -34,3 +34,4 @@ public class GUISample {
         mai.setPawns(pieces, 1);
     }
 }
+*/

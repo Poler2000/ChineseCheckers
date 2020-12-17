@@ -13,7 +13,8 @@ public class NetworkCoordinatorTest {
 	@Test
 	public void upstreamFunctionalityTest() {
 		GameManager callb = Mockito.mock(GameManager.class);
-		NetworkManager undertest = new NetworkManager(callb);
+		NetworkManager undertest = new NetworkManager();
+		undertest.setNetworkEventsHandler(callb);
 		
 		undertest.connStateChanged(true);
 		undertest.sendGameStart();

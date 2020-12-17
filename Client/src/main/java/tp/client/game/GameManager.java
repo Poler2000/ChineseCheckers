@@ -22,10 +22,11 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     
     public Object stateLock = new Object();
 
-    public GameManager(){
-        gui = new GUIManager();
-        network = new NetworkManager(this);
+    public GameManager(GUIManager guiman, NetworkManager netman){
+        gui = guiman;
+        network = netman;
         gui.setUserEventsHandler(this);
+        network.setNetworkEventsHandler(this);
     }
 
     public boolean handleMovement(Step movement){
