@@ -110,8 +110,8 @@ public class Game  {
         String type = null;
         try {
             node = new ObjectMapper().readValue(msg, ObjectNode.class);
-            if (node.has("msgType")) {
-                type =  node.get("msgType").asText();
+            if (node.has("type")) {
+                type =  node.get("type").asText();
             }
         }
         catch (JsonProcessingException e) {
@@ -123,6 +123,9 @@ public class Game  {
             case "registerMsg":
                 numOfPlayers++;
 
+                if(numOfPlayers > 1) {
+                    gameState = GameState.READY;
+                }
                 for(int i = 1; i <= numOfPlayers; i++) {
                     try {
                         communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map, i)), i);

@@ -11,7 +11,7 @@ public class StateReport extends ServerMsg {
 
     public StateReport(int currentPlayer, ArrayList<Pawn> pawns, int wonPlayer, int id) {
         super(id);
-        msgType = "gameState";
+        type = "gameState";
         deployment = new Pawn[pawns.size()];
         deployment = pawns.toArray(deployment);
         this.currentPlayer = currentPlayer;

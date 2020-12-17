@@ -4,14 +4,15 @@ import tp.server.map.Map;
 import tp.server.structural.GameState;
 
 public class ServerConfig extends ServerMsg {
-    public int playersInGame;
-    public GameState state;
+    public int players;
+    public GameState gamestate;
     public Map map;
 
     public ServerConfig(int players, GameState state, Map map, int id) {
         super(id);
-        this.playersInGame = players;
-        this.state = state;
+        type = "config";
+        this.players = players;
+        this.gamestate = state;
         this.map = map;
     }
 }
