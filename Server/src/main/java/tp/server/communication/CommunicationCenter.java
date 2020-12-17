@@ -2,9 +2,7 @@ package tp.server.communication;
 
 import tp.server.logic.Game;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -71,8 +69,8 @@ public class CommunicationCenter {
     }
 
     public void sendMessage(final String msg, int receiverId) {
-        if (clientConnectors.get(receiverId) != null) {
-            clientConnectors.get(receiverId).send(msg);
+        if (clientConnectors.get(receiverId - 1) != null) {
+            clientConnectors.get(receiverId - 1).send(msg);
         }
     }
 
@@ -88,16 +86,20 @@ public class CommunicationCenter {
 
     private class ClientConnector extends Thread {
         private Socket clientSocket;
-        private DataInputStream input = null;
-        private DataOutputStream output = null;
+       // private DataInputStream input = null;
+        //private DataOutputStream output = null;
+        private volatile PrintWriter output = null;
+        private volatile BufferedReader input = null;
         private final int id;
 
         public ClientConnector(Socket socket, int id) {
             this.clientSocket = socket;
             this.id = id;
             try {
-                input = new DataInputStream(clientSocket.getInputStream());
-                output = new DataOutputStream(clientSocket.getOutputStream());
+               // input = new DataInputStream(clientSocket.getInputStream());
+               // output = new DataOutputStream(clientSocket.getOutputStream());
+                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                output = new PrintWriter(clientSocket.getOutputStream(), true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -105,16 +107,23 @@ public class CommunicationCenter {
 
         public void run() {
 
-            String inputLine = null;
+            String inputLine = "";
+            StringBuilder msg = new StringBuilder();
             while(active) {
                 try {
-                    inputLine = input.readUTF();
+                    System.out.println("Waiting for input");
+                    msg = new StringBuilder();
+                    //inputLine = input.readUTF();
+                    while ((inputLine = input.readLine()) != null && !inputLine.equals("MessageTerminated")) {
+                        msg.append(inputLine);
+                    }
+                    System.out.println(msg.toString());
                 }
                 catch (IOException e) {
                     e.printStackTrace();
                 }
                 synchronized (locker) {
-                    game.processMessage(inputLine, id);
+                    game.processMessage(msg.toString(), id);
                 }
             }
 
@@ -128,12 +137,16 @@ public class CommunicationCenter {
         }
 
         public void send(final String msg) {
-            try {
-                output.writeUTF(msg);
+            System.out.println("Writing message");
+            System.out.println(msg);
+            output.print(msg);
+
+           /* try {
+
             }
             catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 }
