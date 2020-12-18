@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class BoardGUI extends JPanel{
     private FieldGUI fields[];
-    private volatile PawnGUI pawns[];
+    private volatile PawnGUI pawns[] = new PawnGUI[0];
 
     private int fieldSize = 2;
 

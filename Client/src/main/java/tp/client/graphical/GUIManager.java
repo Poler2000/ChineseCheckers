@@ -24,22 +24,27 @@ public class GUIManager implements PawnMovementHandler{
     private Object pawnLock = new Object();
     private Object tileLock = new Object();
 
+    private GUICreator creator;
 
-
-    public GUIManager(){
-        mainWindow = new JFrame("Chineese checkers");
+    public GUIManager(GUICreator arg){
+    	creator = new GUICreator();
+    	if (arg != null) {
+    		creator = arg;
+    	}
+    	
+        mainWindow = creator.createWindow("Chineese checkers");
         mainWindow.setSize(1000,1000);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setVisible(true);
 
-        mainView = new BoardGUI(new FieldGUI[]{}, 1);
+        mainView = creator.createBoard(new FieldGUI[]{}, 1);
         mainView.setPawns(new PawnGUI[]{});
         mainWindow.add(mainView, BorderLayout.CENTER);
 
-        userBar = new ActionsGUI(this);
+        userBar = creator.createActions(this);
         mainWindow.add(userBar, BorderLayout.PAGE_START);
 
-        networkBar = new NetworkGUI(this);
+        networkBar = creator.createNetwork(this);
         mainWindow.add(networkBar, BorderLayout.PAGE_END);
 
 
@@ -56,13 +61,16 @@ public class GUIManager implements PawnMovementHandler{
     }
 
     public void setMap(Field[] map){
+        FieldGUI[] newmapgui = new FieldGUI[map.length];
     	synchronized(tileLock) {
 	        tileMap = new HashMap<FieldGUI, Field>();
 	        tileMapRev = new HashMap<Field, FieldGUI>();
-	        for (Field tile : map){
+	        for (int i = 0; i < map.length; i++){
+	        	Field tile = map[i];
 	            FieldGUI adapted = new FieldGUI(getOrthoX(tile.coordinates),getOrthoY(tile.coordinates));
 	            tileMap.put(adapted, tile);
 	            tileMapRev.put(tile,adapted);
+	            newmapgui[i] = adapted;
 	        }
     	}
 
@@ -76,7 +84,7 @@ public class GUIManager implements PawnMovementHandler{
         }
         maxspan += 2;
 
-        BoardGUI board = new BoardGUI(tileMap.keySet().toArray(new FieldGUI[tileMap.keySet().size()]), maxspan);
+        BoardGUI board = creator.createBoard(newmapgui, maxspan);
         board.setPawns(new PawnGUI[]{});
         mainWindow.remove(mainView);
         mainView = board;

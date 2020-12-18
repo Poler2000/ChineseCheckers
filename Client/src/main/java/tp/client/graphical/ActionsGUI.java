@@ -8,11 +8,16 @@ public class ActionsGUI extends JPanel{
     private JButton endTurnButton;
     private JLabel statusText;
 
-    public ActionsGUI(final GUIManager listener){
+    public ActionsGUI(final GUIManager listener, JButton sgb, JButton etb, JLabel slbl){
         super();
         startGameButton = new JButton("Start gry");
         endTurnButton = new JButton("Koniec tury");
         statusText = new JLabel("Czekam na połączenie");
+        if (sgb != null && etb != null && slbl != null) {
+        	startGameButton = sgb;
+        	endTurnButton = etb;
+        	statusText = slbl;
+        }
         add(startGameButton);
         add(endTurnButton);
         add(statusText);

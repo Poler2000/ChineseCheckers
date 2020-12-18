@@ -8,11 +8,16 @@ public class NetworkGUI extends JPanel{
     private JButton connectButton;
     private JLabel connStatus;
 
-    public NetworkGUI(final GUIManager listener){
+    public NetworkGUI(final GUIManager listener, JTextField tfield, JButton bttn, JLabel lbl){
         super();
         serverAddress = new JTextField("localhost");
         connectButton = new JButton("Połącz");
         connStatus = new JLabel("Disconnected");
+        if (tfield != null && bttn != null && lbl != null) {
+        	serverAddress = tfield;
+        	connectButton = bttn;
+        	connStatus = lbl;
+        }
         add(serverAddress);
         add(connectButton);
         add(connStatus);
