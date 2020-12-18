@@ -38,6 +38,29 @@ public class SixPointedStarFactory implements MapFactory{
     }
 
     @Override
+    public Map createEmptyMap() {
+        map = new Map();
+
+        // center, top-left, top-right and bottom corner of map
+        for (int x = -4; x <= 8; x++) {
+            for (int y = -4; y <= 4 - x; y++) {
+                map.addField(new Field(x, y, -(x + y)));
+            }
+        }
+
+        // bottom,-left, bottom-right and top corner of map
+        for (int x = -8; x <= 4; x++) {
+            for (int y = 4; y >= -4 - x; y--) {
+                if ((Math.abs(x) > 4 ||  Math.abs(y) > 4) || x + y > 4) {
+                    map.addField(new Field(x, y, -(x + y)));
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @Override
     public ArrayList<Pawn> createPawns(int playerId, int numOfPlayers) {
         ArrayList<Pawn> pawns = new ArrayList<>();
 

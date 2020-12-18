@@ -139,7 +139,8 @@ public class CommunicationCenter {
         public void send(final String msg) {
             System.out.println("Writing message");
             System.out.println(msg);
-            output.print(msg);
+            output.print(msg + "\r\nMessageTerminated\r\n");
+            output.flush();
 
            /* try {
 

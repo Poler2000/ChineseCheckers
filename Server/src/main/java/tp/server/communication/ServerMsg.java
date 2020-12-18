@@ -2,10 +2,10 @@ package tp.server.communication;
 
 public abstract class ServerMsg {
     protected String type;
-    public int toPlayerID = 0;
+    public int yourPlayerID = 0;
 
     public ServerMsg(int id) {
-        toPlayerID = id;
+        yourPlayerID = id;
     }
 
     public String getType() {

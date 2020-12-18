@@ -9,10 +9,20 @@ package tp.server.structural;
  * UNKNOWN
  */
 public enum GameState {
-    UNSTARTABLE,
-    READY,
-    INPROGRESS,
-    UNKNOWN;
+    UNSTARTABLE(0),
+    READY(1),
+    INPROGRESS(2),
+    UNKNOWN(3);
+
+    private int id;
+
+    GameState(int i) {
+        id = i;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public static GameState fromInt(final int n) {
         switch (n) {
