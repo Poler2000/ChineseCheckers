@@ -63,6 +63,15 @@ public class Game  {
             players.add(new Bot(mapFactory.createPawns(numOfPlayers, numOfPlayers)));
         }
 
+        for(int i = 1; i <= numOfPlayers; i++) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map.getFields(), i)), i);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
         moveValidator = new MoveValidator(map);
     }
 
@@ -70,16 +79,21 @@ public class Game  {
         while(isRunning) {
             Move move = null;
             do {
-                communicationCenter.sendMessageToAll(getCurrentGameInfo());
-                move = players.get(currentPlayer).proposeMove();
+                for (int i = 1; i <= numOfPlayers; i++) {
+                    communicationCenter.sendMessage(getCurrentGameInfo(i), i);
+                }
+                System.out.println("waiting for move!");
+                move = players.get(currentPlayer - 1).proposeMove();
+                System.out.println("moved!");
+
             } while (!moveValidator.Validate(move));
-            players.get(currentPlayer).makeMove(move);
+            players.get(currentPlayer - 1).makeMove(move);
             checkForWinner();
             currentPlayer = (currentPlayer % numOfPlayers) + 1;
         }
     }
 
-    private String getCurrentGameInfo() {
+    private String getCurrentGameInfo(int playerId) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         ArrayList<Pawn> pawns = new ArrayList<Pawn>();
@@ -88,7 +102,7 @@ public class Game  {
             pawns.addAll(p.getPawns());
         }
 
-        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, 1);
+        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, playerId);
         try
         {
             return objectMapper.writeValueAsString(msg);
@@ -148,8 +162,11 @@ public class Game  {
                 break;
             case "playerMove":
                 ClientMessageParser parser = new ClientMessageParser();
-                Move move = parser.getMove(node.get("steps").asText());
-                players.get(fromPlayer).setMove(move);
+                if (node.has("steps")) {;
+                    Move move = parser.getMove(node.get("steps"), map, players.get(fromPlayer - 1).getPawns());
+                    players.get(fromPlayer - 1).setMove(move);
+                }
+                System.out.println("new Move handled!");
                 break;
             default:
                 break;

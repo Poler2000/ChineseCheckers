@@ -8,7 +8,7 @@ import tp.server.structural.Pawn;
 import java.util.ArrayList;
 
 public class Player extends AbstractPlayer {
-    private Move move = null;
+    private volatile Move move;
 
     public Player(ArrayList<Pawn> pawns) {
         super(pawns);
@@ -16,7 +16,18 @@ public class Player extends AbstractPlayer {
 
     @Override
     public Move proposeMove() {
-        while (move == null) ;
+        System.out.println("waiting!");
+        while (!checkPrepared()) {
+            try {
+                Thread.sleep(500);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(checkPrepared());
+        };
+        //while (move == null)  ;
+        System.out.println("Oh!");
 
         Move copy = move;
         move = null;
@@ -24,7 +35,13 @@ public class Player extends AbstractPlayer {
     }
 
     @Override
-    public void setMove(final Move move) {
+    public synchronized void setMove(final Move move) {
         this.move = move;
+        System.out.println("Set!");
+        System.out.println(checkPrepared());
+    }
+
+    public synchronized boolean checkPrepared() {
+        return !(move == null);
     }
 }

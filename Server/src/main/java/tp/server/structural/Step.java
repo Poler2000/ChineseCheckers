@@ -4,24 +4,24 @@ package tp.server.structural;
  * Represents single change in pawn's position
  */
 public class Step {
-    private final Pawn actor;
-    private final Field destination;
+    private final Pawn pawn;
+    private final Field newlocation;
 
     public Step(final Pawn pawn, final Field field) {
-        this.actor = pawn;
-        this.destination = field;
+        this.pawn = pawn;
+        this.newlocation = field;
     }
 
     public Step() {
-        this.actor = null;
-        this.destination = null;
+        this.pawn = null;
+        this.newlocation = null;
     }
 
-    public Pawn getActor() {
-        return actor;
+    public Pawn getPawn() {
+        return pawn;
     }
 
-    public Field getDestination() {
-        return destination;
+    public Field getNewlocation() {
+        return newlocation;
     }
 }

@@ -53,4 +53,13 @@ public class Map {
     public int numOfFields() {
         return fields.size();
     }
+
+    public Field getById(int dest) {
+        for(Field field: fields) {
+            if(field.getId() == dest) {
+                return field;
+            }
+        }
+        return null;
+    }
 }
