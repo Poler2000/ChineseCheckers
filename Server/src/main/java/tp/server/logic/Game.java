@@ -82,9 +82,12 @@ public class Game  {
                 for (int i = 1; i <= numOfPlayers; i++) {
                     communicationCenter.sendMessage(getCurrentGameInfo(i), i);
                 }
-                move = players.get(currentPlayer).proposeMove();
+                System.out.println("waiting for move!");
+                move = players.get(currentPlayer - 1).proposeMove();
+                System.out.println("moved!");
+
             } while (!moveValidator.Validate(move));
-            players.get(currentPlayer).makeMove(move);
+            players.get(currentPlayer - 1).makeMove(move);
             checkForWinner();
             currentPlayer = (currentPlayer % numOfPlayers) + 1;
         }
@@ -159,8 +162,11 @@ public class Game  {
                 break;
             case "playerMove":
                 ClientMessageParser parser = new ClientMessageParser();
-                Move move = parser.getMove(node.get("steps").asText());
-                players.get(fromPlayer).setMove(move);
+                if (node.has("steps")) {;
+                    Move move = parser.getMove(node.get("steps"), map, players.get(fromPlayer - 1).getPawns());
+                    players.get(fromPlayer - 1).setMove(move);
+                }
+                System.out.println("new Move handled!");
                 break;
             default:
                 break;
