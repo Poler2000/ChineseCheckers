@@ -94,7 +94,7 @@ public class GameTest {
 		Mockito.verify(netmock, Mockito.times(1)).sendMove(Mockito.any());
 		
 		undertest.handleServerDisconnect();
-		Mockito.verify(guimock).setNetworkLabel("Disconnected");
+		Mockito.verify(guimock).setNetworkLabel("Rozłączony");
 		
 		
 	}
