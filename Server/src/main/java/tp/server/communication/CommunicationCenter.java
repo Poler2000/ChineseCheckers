@@ -54,18 +54,12 @@ public class CommunicationCenter {
 
         while (true) {
             synchronized (locker) {
-                if(!(shouldListenForNewClients && numberOfClients[0] < 6)) {
+                if(!(shouldListenForNewClients && numberOfClients[0] <= 6)) {
                    break;
                 }
             }
         }
         return numberOfClients[0];
-    }
-
-    public void sendMessageToAll(final String msg) {
-        for (ClientConnector c : clientConnectors) {
-            c.send(msg);
-        }
     }
 
     public void sendMessage(final String msg, int receiverId) {
@@ -86,8 +80,6 @@ public class CommunicationCenter {
 
     private class ClientConnector extends Thread {
         private Socket clientSocket;
-       // private DataInputStream input = null;
-        //private DataOutputStream output = null;
         private volatile PrintWriter output = null;
         private volatile BufferedReader input = null;
         private final int id;
@@ -96,8 +88,6 @@ public class CommunicationCenter {
             this.clientSocket = socket;
             this.id = id;
             try {
-               // input = new DataInputStream(clientSocket.getInputStream());
-               // output = new DataOutputStream(clientSocket.getOutputStream());
                 input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 output = new PrintWriter(clientSocket.getOutputStream(), true);
             } catch (IOException e) {

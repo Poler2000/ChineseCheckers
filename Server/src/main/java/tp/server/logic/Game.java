@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class Game  {
     private boolean isRunning;
     private MoveValidator moveValidator;
+    private WinValidator winValidator;
     private ArrayList<AbstractPlayer> players;
     private CommunicationCenter communicationCenter;
     private Map map;
@@ -25,7 +26,11 @@ public class Game  {
     private int currentPlayer = 1;
     private GameState gameState;
 
-
+    /**
+     * Entry point.
+     * Create new Game
+     * @param args
+     */
     public static void main(String[] args) {
         Game game = new Game();
 
@@ -40,15 +45,38 @@ public class Game  {
         gameState = GameState.UNSTARTABLE;
     }
 
+    /**
+     * initialize needed components
+     */
     private void init() {
+        initCommunication();
 
-        try {
-            communicationCenter = new CommunicationCenter(1410, this);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        initPlayers();
 
+        sendServerConfig();
+
+        moveValidator = new MoveValidator(map);
+    }
+
+    /**
+     * sends current server configuration info to all players
+     */
+    private void sendServerConfig() {
+        for(int i = 1; i <= numOfPlayers; i++) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map.getFields(), i)), i);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Creates players that should controlled by clients.
+     * Bots are not supported currently, but can be added
+     */
+    private void initPlayers() {
         int numOfBots = 0;
         numOfPlayers = communicationCenter.establishConnections();
 
@@ -63,18 +91,23 @@ public class Game  {
             players.add(new Bot(mapFactory.createPawns(numOfPlayers, numOfPlayers)));
         }
 
-        for(int i = 1; i <= numOfPlayers; i++) {
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map.getFields(), i)), i);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        moveValidator = new MoveValidator(map);
+        winValidator = new WinValidator(players);
     }
 
+    private void initCommunication() {
+        try {
+            communicationCenter = new CommunicationCenter(1410, this);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Game's main loop.
+     * Handles moves of players respectively to their
+     * turn order and checks if there is a winner.
+     */
     private void run() {
         while(isRunning) {
             Move move = null;
@@ -82,17 +115,27 @@ public class Game  {
                 for (int i = 1; i <= numOfPlayers; i++) {
                     communicationCenter.sendMessage(getCurrentGameInfo(i), i);
                 }
-                System.out.println("waiting for move!");
                 move = players.get(currentPlayer - 1).proposeMove();
-                System.out.println("moved!");
-
             } while (!moveValidator.Validate(move));
+
             players.get(currentPlayer - 1).makeMove(move);
             checkForWinner();
             currentPlayer = (currentPlayer % numOfPlayers) + 1;
         }
     }
 
+    /**
+     * checks if there is a winner and, if so, ends game;
+     */
+    private void checkForWinner() {
+        isRunning = !winValidator.isThereWinner();
+    }
+
+    /**
+     * Creates json with current game state for specified player
+     * @param playerId
+     * @return
+     */
     private String getCurrentGameInfo(int playerId) {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -113,13 +156,15 @@ public class Game  {
         return null;
     }
 
-    private void checkForWinner() {
-    }
-
     // TODO implement
     private void end() {
     }
 
+    /**
+     * Responsible for dealing with messages from client
+     * @param msg message received
+     * @param fromPlayer specify who sent the message
+     */
     public void processMessage(final String msg, final int fromPlayer) {
         ObjectNode node = null;
         String type = null;
@@ -136,40 +181,68 @@ public class Game  {
         ObjectMapper mapper = new ObjectMapper();
         switch (type) {
             case "registerMsg":
-                numOfPlayers++;
-
-                if(numOfPlayers > 1) {
-                    gameState = GameState.READY;
-                }
-                for(int i = 1; i <= numOfPlayers; i++) {
-                    try {
-                        MapFactory mapFactory = new SixPointedStarFactory();
-                        Map tmpMap = mapFactory.createEmptyMap();
-                        communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, tmpMap.getFields(), i)), i);
-                    }
-                    catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                }
+                handleRegister(mapper);
                 break;
             case "setupMsg":
-                int state = -1;
-                if (node.has("setState")) {
-                    state = node.get("setState").asInt();
-                }
-                gameState = GameState.fromInt(state);
-                communicationCenter.stopListeningForNewClients();
+                handleSetup(node);
                 break;
             case "playerMove":
-                ClientMessageParser parser = new ClientMessageParser();
-                if (node.has("steps")) {;
-                    Move move = parser.getMove(node.get("steps"), map, players.get(fromPlayer - 1).getPawns());
-                    players.get(fromPlayer - 1).setMove(move);
-                }
-                System.out.println("new Move handled!");
+                handleMove(fromPlayer, node);
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * sets received move as client's proposal
+     * @param fromPlayer specify, which player sent the message
+     * @param node
+     */
+    private void handleMove(final int fromPlayer, final ObjectNode node) {
+        ClientMessageParser parser = new ClientMessageParser();
+        if (node.has("steps")) {;
+            Move move = parser.getMove(node.get("steps"), map, players.get(fromPlayer - 1).getPawns());
+            players.get(fromPlayer - 1).setMove(move);
+        }
+    }
+
+    /**
+     * handles request to start game
+     * @param node
+     */
+    private void handleSetup(final ObjectNode node) {
+        int state = 0;
+        if (node.has("setState")) {
+            state = node.get("setState").asInt();
+        }
+        gameState = GameState.fromInt(state);
+        communicationCenter.stopListeningForNewClients();
+    }
+
+    /**
+     * Registers new user and sends info about current server config
+     * @param mapper
+     */
+    private void handleRegister(final ObjectMapper mapper) {
+        numOfPlayers++;
+
+        if (numOfPlayers > 1) {
+            gameState = GameState.READY;
+        }
+        if (numOfPlayers > 6) {
+            gameState = GameState.UNSTARTABLE;
+        }
+
+        for(int i = 1; i <= numOfPlayers; i++) {
+            try {
+                MapFactory mapFactory = new SixPointedStarFactory();
+                map = mapFactory.createEmptyMap();
+                communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map.getFields(), i)), i);
+            }
+            catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

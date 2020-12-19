@@ -5,23 +5,23 @@ package tp.server.structural;
  */
 public class Step {
     private final Pawn pawn;
-    private final Field newlocation;
+    private final Field destination;
 
     public Step(final Pawn pawn, final Field field) {
         this.pawn = pawn;
-        this.newlocation = field;
+        this.destination = field;
     }
 
     public Step() {
         this.pawn = null;
-        this.newlocation = null;
+        this.destination = null;
     }
 
     public Pawn getPawn() {
         return pawn;
     }
 
-    public Field getNewlocation() {
-        return newlocation;
+    public Field getDestination() {
+        return destination;
     }
 }
