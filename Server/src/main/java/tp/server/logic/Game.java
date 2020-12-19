@@ -7,7 +7,6 @@ import tp.server.communication.*;
 import tp.server.map.Map;
 import tp.server.map.MapFactory;
 import tp.server.map.SixPointedStarFactory;
-import tp.server.structural.Field;
 import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;

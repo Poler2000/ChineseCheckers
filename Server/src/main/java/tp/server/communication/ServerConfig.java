@@ -1,12 +1,14 @@
 package tp.server.communication;
 
-import tp.server.logic.Game;
-import tp.server.map.Map;
 import tp.server.structural.Field;
 import tp.server.structural.GameState;
 
 import java.util.ArrayList;
 
+/**
+ * Sent in process of registration
+ * Specify number of players, current game state and map
+ */
 public class ServerConfig extends ServerMsg {
     public int players;
     public int gamestate;

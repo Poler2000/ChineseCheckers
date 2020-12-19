@@ -1,7 +1,5 @@
 package tp.server.communication;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import tp.server.map.Map;
@@ -10,9 +8,10 @@ import tp.server.structural.Pawn;
 import tp.server.structural.Step;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
+/**
+ * Parses given message to move
+ */
 public class ClientMessageParser {
     public Move getMove(JsonNode node, Map map, ArrayList<Pawn> pawns) {
         ObjectMapper objectMapper = new ObjectMapper();

@@ -7,6 +7,10 @@ import tp.server.structural.Step;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Player participating in game.
+ * Has pawns and id
+ */
 public abstract class AbstractPlayer {
     private ArrayList<Pawn> pawns = new ArrayList<Pawn>();
     private MoveBuilder moveBuilder;
