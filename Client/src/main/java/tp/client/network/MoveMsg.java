@@ -4,10 +4,20 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import tp.client.structural.*;
 
+/**
+ * A class to covert move information into
+ * a ready to send JSON string
+ * @author anon
+ *
+ */
 public class MoveMsg {
 	
 	private JSONObject message;
 	
+	/**
+	 * Constructor
+	 * @param move the move to represent
+	 */
 	public MoveMsg(Step[] move) {
 		message = new JSONObject();
 		message.put("type", "playerMove");
@@ -21,6 +31,9 @@ public class MoveMsg {
 		message.put("steps", steps);
 	}
 	
+	/**
+	 * Get the JSON string representation
+	 */
 	public String toString() {
 		return message.toString();
 	}

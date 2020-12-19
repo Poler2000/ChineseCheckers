@@ -3,6 +3,11 @@ package tp.client.network;
 import java.io.*;
 import java.net.*;
 
+/**
+ * The class responsible for managing the raw network socket
+ * @author anon
+ *
+ */
 public class ConnMan {
 	private volatile Thread netThr = null;
 	private volatile Socket netSock = null;
@@ -17,6 +22,11 @@ public class ConnMan {
 	private Object connLock = new Object();
 	private Object thrLock = new Object();
 	
+	
+	/**
+	 * The default constructor
+	 * @param parent object to call back on (dis)connect / incoming message
+	 */
 	public ConnMan(NetworkManager parent) {
 		upstream = parent;
 	}
@@ -29,6 +39,11 @@ public class ConnMan {
 		upstream.connStateChanged(connected);
 	}
 	
+	/**
+	 * Send a string out the network
+	 * Only works when connected
+	 * @param msg payload
+	 */
 	public void send(String msg) {
 		synchronized(connLock) {
 			if (netSock != null && connected) {
@@ -39,6 +54,9 @@ public class ConnMan {
 		}
 	}
 	
+	/**
+	 * Disconnect if currently connected
+	 */
 	public void disconnect() {
 		synchronized(thrLock) {
 			synchronized(connLock) {
@@ -65,6 +83,10 @@ public class ConnMan {
 		}
 	}
 	
+	/**
+	 * (Re)Connect to a server
+	 * @param addr hostname
+	 */
 	public void connect(String addr) {
 		disconnect();
 		spawnThread(addr);

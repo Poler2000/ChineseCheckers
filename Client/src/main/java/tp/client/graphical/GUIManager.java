@@ -10,6 +10,12 @@ import tp.client.structural.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+/**
+ * The main GUI subsystem access class
+ * Represents the entire client's window
+ * @author anon
+ *
+ */
 public class GUIManager implements PawnMovementHandler{
 
     private Map<FieldGUI, Field> tileMap;
@@ -26,6 +32,10 @@ public class GUIManager implements PawnMovementHandler{
 
     private GUICreator creator;
 
+    /**
+     * The default constructor
+     * @param arg the helper to use for creating children and the window
+     */
     public GUIManager(GUICreator arg){
     	creator = new GUICreator();
     	if (arg != null) {
@@ -60,6 +70,10 @@ public class GUIManager implements PawnMovementHandler{
         return (1.5 * cubic[2]);
     }
 
+    /**
+     * Set the game map in the play area
+     * @param map the tiles making up the map
+     */
     public void setMap(Field[] map){
         FieldGUI[] newmapgui = new FieldGUI[map.length];
     	synchronized(tileLock) {
@@ -95,6 +109,11 @@ public class GUIManager implements PawnMovementHandler{
 
     }
 
+    /**
+     * Set the pawns currently in play
+     * @param pawns the pawns
+     * @param myPID your player id (other players' pawns get locked from interaction)
+     */
     public void setPawns(Pawn[] pawns, int myPID){
         PawnGUI[] ret = new PawnGUI[pawns.length];
     	synchronized(pawnLock) {
@@ -114,11 +133,22 @@ public class GUIManager implements PawnMovementHandler{
         mainView.setPawns(ret);
     }
 
+    /**
+     * Set user events handler
+     * handleMovement pawn movement
+     * handleGameStartReq game start
+     * handleTurnEndReq turn end
+     * handleServerConnReq server connect
+     * getMapLock - lock to use when processing movement
+     * @param han
+     */
     public void setUserEventsHandler(UserEventsHandler han){
         upstream = han;
     }
 
-    
+    /**
+     * Handle moves from BoardGUI and bubble them up
+     */
     public boolean handlePawnMovement(PawnGUI piece, FieldGUI dest){
         if (upstream != null){
             Step newSte = new Step();
@@ -142,37 +172,60 @@ public class GUIManager implements PawnMovementHandler{
         }
     }
 
+    /**
+     * Bubble up game start requests
+     */
     public void handleStartGame(){
         if (upstream != null){
             upstream.handleGameStartReq();
         }
     }
-
+    /**
+     * Bubble up turn end requests
+     */
     public void handleEndTurn(){
         if (upstream != null){
             upstream.handleTurnEndReq();
         }
     }
-
+    /**
+     * Bubble up server connect requests
+     */
     public void handleConnectServer(String addr){
         if (upstream != null){
             upstream.handleServerConnReq(addr);
         }
     }
 
+    /**
+     * Disable user game interaction
+     * @param iff disable/enable
+     */
     public void disableTurn(boolean iff){
         mainView.pickUpDisabled = iff;
         userBar.enableEndTurn(!iff);
     }
 
+    /**
+     * Disable game start button
+     * @param iff disable?
+     */
     public void disableGameStart(boolean iff){
         userBar.enableStartGame(!iff);
     }
 
+    /**
+     * Set game status label
+     * @param text text to display
+     */
     public void setGameLabel(String text){
         userBar.setLabel(text);
     }
 
+    /**
+     * Set network status label
+     * @param text text to display
+     */
     public void setNetworkLabel(String text){
         networkBar.setConnStatus(text);
     }
