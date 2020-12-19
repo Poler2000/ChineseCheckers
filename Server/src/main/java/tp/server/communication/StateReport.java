@@ -5,16 +5,31 @@ import tp.server.structural.Pawn;
 import java.util.ArrayList;
 
 public class StateReport extends ServerMsg {
-    public int currentPlayer;
-    public Pawn[] deployment;
-    public int wonPlayer = 0;
+    public int turnOf;
+    public ArrayList<MessagePawn> pawns = new ArrayList<>();
+    public int won = 0;
 
     public StateReport(int currentPlayer, ArrayList<Pawn> pawns, int wonPlayer, int id) {
         super(id);
         type = "gameState";
-        deployment = new Pawn[pawns.size()];
-        deployment = pawns.toArray(deployment);
-        this.currentPlayer = currentPlayer;
-        this.wonPlayer = wonPlayer;
+        for (Pawn p : pawns) {
+            this.pawns.add(new MessagePawn(p.getId(), p.getOwner(), p.getLocation().getId()));
+        }
+        //this.pawns = new Pawn[pawns.size()];
+        //this.pawns = pawns.toArray(this.pawns);
+        this.turnOf = currentPlayer;
+        this.won = wonPlayer;
+    }
+
+    public class MessagePawn {
+        public int id;
+        public int owner;
+        public int location;
+
+        public MessagePawn(int id, int owner, int location) {
+            this.id = id;
+            this.owner = owner;
+            this.location = location;
+        }
     }
 }

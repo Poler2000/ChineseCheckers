@@ -6,20 +6,20 @@ package tp.server.structural;
 public class Pawn implements Cloneable {
     private final int id;
     private Field location;
-    private final int playerId;
+    private final int owner;
 
     private static final Object locker = new Object();
     private static int id_counter = 0;
 
     public Pawn(final Field field, final int playerId) {
         location = field;
-        this.playerId = playerId;
+        this.owner = playerId;
         location.setOccupied(true);
         id = assignId();
     }
 
     public Pawn() {
-        playerId = 0;
+        owner = 0;
         id = assignId();
     }
 
@@ -27,8 +27,8 @@ public class Pawn implements Cloneable {
         return location;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    public int getOwner() {
+        return owner;
     }
 
     /**
