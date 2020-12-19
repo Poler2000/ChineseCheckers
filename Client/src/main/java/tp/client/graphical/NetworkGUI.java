@@ -26,7 +26,7 @@ public class NetworkGUI extends JPanel{
         super();
         serverAddress = new JTextField("localhost");
         connectButton = new JButton("Połącz");
-        connStatus = new JLabel("Disconnected");
+        connStatus = new JLabel("Rozłączony");
         if (tfield != null && bttn != null && lbl != null) {
         	serverAddress = tfield;
         	connectButton = bttn;

@@ -100,7 +100,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
      * @param addr the servers hostname/ip
      */
     public void handleServerConnReq(String addr){
-        gui.setNetworkLabel("Connecting");
+        gui.setNetworkLabel("Łączenie");
         network.connect(addr);
     }
 
@@ -165,7 +165,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
      * if currently connected
      */
     public void handleServerDisconnect(){
-        gui.setNetworkLabel("Disconnected");
+        gui.setNetworkLabel("Rozłączony");
         gui.disableTurn(true);
         currentState = GameState.UNKNOWN;
     }
@@ -174,7 +174,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
      * Update GUI to show connected status
      */
     public void handleServerConnect(){
-        gui.setNetworkLabel("Connected");
+        gui.setNetworkLabel("Połączony");
     }
     
     /**
