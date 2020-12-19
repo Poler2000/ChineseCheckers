@@ -3,6 +3,13 @@ package tp.client.game;
 import java.util.*;
 import tp.client.structural.*;
 
+/**
+ * A class implementing move validation for vanilla
+ * trylma game. A move consists of steps in which a
+ * pawn jumps over or moves to adjacent field
+ * @author anon
+ *
+ */
 public class MoveValidator {
     private static int getCityDistance(int[] coords1, int[] coords2){
         return (Math.abs(coords1[0] - coords2[0]) + 
@@ -14,6 +21,14 @@ public class MoveValidator {
         return coords1[0] == coords2[0] || coords1[1] == coords2[1] || coords1[2] == coords2[2];
     }
 
+    /**
+     * Validate a move
+     * Current deployment is needed to validate jumps
+     * and ensure no collisions
+     * @param move the move to validate
+     * @param initState the pawns deployment at the beginning of the move
+     * @return if the move is valid
+     */
     public static boolean validate(List<Step> move, Pawn[] initState){
         int moveType = 0;
 

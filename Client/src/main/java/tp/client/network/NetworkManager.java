@@ -7,15 +7,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 
+/**
+ * The main network coordinator
+ * mapping game logic to network actions
+ * @author anon
+ *
+ */
 public class NetworkManager {
     private NetworkEventsHandler upstream = null;
     private ConnMan sock;
     private HashMap<Integer, Field> lastrefs = new HashMap<Integer, Field>();
 
+    /**
+     * Constructor
+     */
     public NetworkManager(){
         sock = new ConnMan(this);
     }
     
+    /**
+     * Set the object to handle network and
+     * game events
+     * @param handl the handler
+     */
     public void setNetworkEventsHandler(NetworkEventsHandler handl) {
     	upstream = handl;
     }
@@ -27,19 +41,34 @@ public class NetworkManager {
     	}
     }
 
+    /**
+     * Send a game start request packet
+     */
     public void sendGameStart(){
     	SetupMsg msg = new SetupMsg();
     	sock.send(msg.toString());
     }
+    /**
+     * Send a move to the server
+     * @param move to send
+     */
     public void sendMove(Step[] move){
     	MoveMsg msg = new MoveMsg(move);
     	sock.send(msg.toString());
     }
+    /**
+     * Send a registration packet
+     */
     private void sendRegister() {
     	RegistrationMsg msg = new RegistrationMsg();
     	sock.send(msg.toString());
     }
     
+    /**
+     * Called to process a new message and
+     * callback the handler
+     * @param message
+     */
     protected void handleIncoming(String message) {
     	try {
     	JSONObject incoming = new JSONObject(message);
@@ -66,6 +95,11 @@ public class NetworkManager {
     	}
     }
     
+    /**
+     * Process connection status change
+     * and propagate it to handler
+     * @param newstate
+     */
     protected void connStateChanged(boolean newstate) {
     	if (newstate) {
     		sendRegister();
@@ -80,6 +114,10 @@ public class NetworkManager {
     	}
     }
     
+    /**
+     * Connect to a server
+     * @param addr hostname
+     */
     public void connect(String addr){
     	sock.connect(addr);
     }

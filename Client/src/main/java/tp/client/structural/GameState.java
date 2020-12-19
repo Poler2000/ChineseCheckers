@@ -1,5 +1,10 @@
 package tp.client.structural;
 
+/**
+ * The status of the game
+ * @author anon
+ *
+ */
 public enum GameState {
     UNSTARTABLE,
     READY,

@@ -4,12 +4,24 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.event.*;
 
+/**
+ * A class representing a playing field
+ * Draws all FieldGUI and PawnGUI instances in itself
+ * and handles dragging
+ * @author anon
+ *
+ */
 public class BoardGUI extends JPanel{
     private FieldGUI fields[];
     private volatile PawnGUI pawns[] = new PawnGUI[0];
 
     private int fieldSize = 2;
 
+    /**
+     * The default constructor
+     * @param fields the map to use
+     * @param diam the radius in fields to display (zoom level)
+     */
     public BoardGUI(FieldGUI fields[], int diam){
         super();
         this.fields = fields;
@@ -18,6 +30,10 @@ public class BoardGUI extends JPanel{
 
     }
 
+    /**
+     * Update displayed pawns
+     * @param state new pawns state
+     */
     public void setPawns(PawnGUI[] state){
         this.pawns = state;
         repaint();
@@ -29,6 +45,9 @@ public class BoardGUI extends JPanel{
         return (mindim/fieldSize)*0.4;
     }
 
+    /**
+     * The main Jcomponent drawing method
+     */
     @Override
     protected void paintComponent(Graphics gra){
         super.paintComponent(gra);
@@ -45,6 +64,11 @@ public class BoardGUI extends JPanel{
 
     private PawnMovementHandler moveHandlere;
 
+    /**
+     * Set the object to call back on pawn movement
+     * (handlePawnMovement)
+     * @param handler
+     */
     public void setMovementHandler(PawnMovementHandler handler){
         moveHandlere = handler;
     }
@@ -63,6 +87,7 @@ public class BoardGUI extends JPanel{
         return draggedPawn;
     }
 
+    ///Enable picking up pawns (or lock them from the user)
     public volatile boolean pickUpDisabled = false;
 
     private void setupListeners(){

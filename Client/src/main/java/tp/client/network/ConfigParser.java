@@ -5,7 +5,18 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+/**
+ * A parser for the Server config packets
+ * Converts JSON into ServerConfig or null if invalid
+ * @author anon
+ *
+ */
 public class ConfigParser{
+	/**
+	 * Parse json into config
+	 * @param source jsom
+	 * @return config
+	 */
 	public static ServerConfig parse(JSONObject source) {
 		try {
 			ServerConfig ret = new ServerConfig();
