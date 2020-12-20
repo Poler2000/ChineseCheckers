@@ -33,7 +33,6 @@ public class PlayerTest {
         {
             json = objectMapper.writeValueAsString(move);
             player.setMove(move);
-            System.out.println(json);
             Move newMove = player.proposeMove();
         }
         catch (JsonProcessingException e) {

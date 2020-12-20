@@ -92,7 +92,6 @@ public class CommunicationCenter {
             while(active) {
                 try {
                     msg = new StringBuilder();
-                    //inputLine = input.readUTF();
                     while ((inputLine = input.readLine()) != null && !inputLine.equals("MessageTerminated")) {
                         msg.append(inputLine);
                     }

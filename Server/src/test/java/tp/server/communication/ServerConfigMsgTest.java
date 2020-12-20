@@ -6,7 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import tp.server.map.Map;
 import tp.server.map.SixPointedStarFactory;
+import tp.server.structural.Field;
 import tp.server.structural.GameState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,8 +30,8 @@ public class ServerConfigMsgTest {
             json = objectMapper.writeValueAsString(msg);
             JsonNode rootNode = objectMapper.readTree(json);
 
-            Map newMap = objectMapper.convertValue(rootNode.path("map"), Map.class);
-            assertEquals(121, newMap.numOfFields());
+            ArrayList<Field> fields = objectMapper.convertValue(rootNode.path("map"), ArrayList.class);
+            assertEquals(121, fields.size());
 
         }
         catch (JsonProcessingException e) {

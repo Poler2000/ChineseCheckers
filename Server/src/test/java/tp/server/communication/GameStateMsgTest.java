@@ -22,8 +22,7 @@ public class GameStateMsgTest {
         ServerMsg msg = new StateReport(3, pawns, 0, 1);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String expected = "{\"msgType\":\"gameState\",\"toPlayerID\":1,\"currentPlayer\":3,\"deployment\":[{\"id\":150,\"location\":{\"id\":605,\"coordinates\":[-1,-2,3],\"playerGoal\":0,\"occupied\":true},\"playerId\":2},{\"id\":151,\"location\":{\"id\":606,\"coordinates\":[1,2,-3],\"playerGoal\":0,\"occupied\":true},\"playerId\":3},{\"id\":152,\"location\":{\"id\":607,\"coordinates\":[7,-3,-4],\"playerGoal\":0,\"occupied\":true},\"playerId\":4}],\"wonPlayer\":0}";
-
+        String expected = "{\"type\":\"gameState\",\"yourPlayerID\":1,\"turnOf\":3,\"pawns\":[{\"id\":0,\"owner\":2,\"location\":0},{\"id\":1,\"owner\":3,\"location\":1},{\"id\":2,\"owner\":4,\"location\":2}],\"won\":0}";
         String json = null;
         try {
             json = objectMapper.writeValueAsString(msg);

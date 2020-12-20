@@ -69,7 +69,6 @@ public class Field implements Cloneable {
     public boolean equals(final Object obj) {
         Field f = (Field)obj;
         return Arrays.equals(coords, f.coords) &&
-                id == f.id &&
                 this.playerGoal == f.playerGoal;
     }
 }
