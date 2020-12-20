@@ -18,20 +18,46 @@ public class MoveValidator {
         Iterator<Step> steps = move.getSteps().iterator();
         
         if (steps.hasNext()) {
-            if (isNeighbourValid(steps.next())) {
-                if (!steps.hasNext()) {
+            Step s = steps.next();
+            if (!(isNeighbourValid(s) || isNoMove(s))) {
+                if (isJumpValid(s)) {
+                    while (steps.hasNext()) {
+                        Step step = steps.next();
+                        if (!isJumpValid(s.getDestination().coordinatesAsXYZ(), step)) {
+                            return false;
+                        }
+                        s = step;
+                    }
                     return true;
                 }
-                while (steps.hasNext()) {
-                    Step step = steps.next();
-                    if (!isJumpValid(step)) {
-                        return false;
-                    }
-                }
+                return false;
             }
-            return true;
+            else if (steps.hasNext()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isJumpValid(Coordinates pCoord, Step step) {
+        final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
+        if ((Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
+                Math.abs(pCoord.z - lCoord.z)) == 4) {
+            if ((Math.abs(pCoord.x - lCoord.x) == 0) || (Math.abs(pCoord.y - lCoord.y) == 0) ||
+                    (Math.abs(pCoord.z - lCoord.z) == 0)) {
+                return (!map.getField(lCoord).isOccupied() && map.getField(
+                        (pCoord.x + lCoord.x) / 2,
+                        (pCoord.y + lCoord.y) / 2,
+                        (pCoord.z + lCoord.z) / 2
+                ).isOccupied());
+            }
         }
         return false;
+    }
+
+    private boolean isNoMove(Step s) {
+        return s.getPawn().getLocation().equals(s.getDestination());
     }
 
     private boolean isNeighbourValid(Step step) {
