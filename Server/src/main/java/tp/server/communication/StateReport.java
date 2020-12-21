@@ -4,6 +4,10 @@ import tp.server.structural.Pawn;
 
 import java.util.ArrayList;
 
+/**
+ * Contains information specifying current state of play -
+ * positions of pawns, current player and winners
+ */
 public class StateReport extends ServerMsg {
     public int turnOf;
     public ArrayList<MessagePawn> pawns = new ArrayList<>();
@@ -15,8 +19,6 @@ public class StateReport extends ServerMsg {
         for (Pawn p : pawns) {
             this.pawns.add(new MessagePawn(p.getId(), p.getOwner(), p.getLocation().getId()));
         }
-        //this.pawns = new Pawn[pawns.size()];
-        //this.pawns = pawns.toArray(this.pawns);
         this.turnOf = currentPlayer;
         this.won = wonPlayer;
     }

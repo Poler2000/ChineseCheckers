@@ -6,7 +6,6 @@ import java.util.Arrays;
  * Representation of single field on the map
  */
 public class Field implements Cloneable {
-    //private final coords coord;
     private final int id;
     private final int coords[];
     private int playerGoal;
@@ -21,11 +20,6 @@ public class Field implements Cloneable {
         coords = new int[] {x,y,z};
         playerGoal = 0;
         occupied = false;
-    }
-
-    public Field() {
-       coords = new int[] {0,0,0};
-       id = assignId();
     }
 
     public Coordinates coordinatesAsXYZ() {
@@ -75,7 +69,6 @@ public class Field implements Cloneable {
     public boolean equals(final Object obj) {
         Field f = (Field)obj;
         return Arrays.equals(coords, f.coords) &&
-                id == f.id &&
                 this.playerGoal == f.playerGoal;
     }
 }

@@ -1,7 +1,5 @@
 package tp.server.structural;
 
-import tp.server.structural.Step;
-
 import java.util.ArrayList;
 
 /**

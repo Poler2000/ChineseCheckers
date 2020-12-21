@@ -20,13 +20,11 @@ public class CommunicationCenter {
         serverSocket = new ServerSocket(port);
         this.game = game;
         active = true;
-        System.out.println("Center Created");
     }
 
     public int establishConnections() {
         shouldListenForNewClients = true;
         final int[] numberOfClients = {0};
-        System.out.println("Center Up and running");
 
         Runnable r = new Runnable() {
             @Override
@@ -34,16 +32,12 @@ public class CommunicationCenter {
                 Socket socket = null;
                 while (true) {
                     try {
-                        System.out.println("Waiting for new client");
                         socket = serverSocket.accept();
-                        System.out.println("Houston, we have connection");
-
                     }
                     catch (IOException e) {
                         e.printStackTrace();
                     }
                     numberOfClients[0]++;
-                    System.out.println(numberOfClients[0]);
                     clientConnectors.add(new ClientConnector(socket, numberOfClients[0]));
                     clientConnectors.get(numberOfClients[0] - 1).start();
                 }
@@ -54,18 +48,12 @@ public class CommunicationCenter {
 
         while (true) {
             synchronized (locker) {
-                if(!(shouldListenForNewClients && numberOfClients[0] < 6)) {
+                if(!(shouldListenForNewClients && numberOfClients[0] <= 6)) {
                    break;
                 }
             }
         }
         return numberOfClients[0];
-    }
-
-    public void sendMessageToAll(final String msg) {
-        for (ClientConnector c : clientConnectors) {
-            c.send(msg);
-        }
     }
 
     public void sendMessage(final String msg, int receiverId) {
@@ -80,14 +68,8 @@ public class CommunicationCenter {
         }
     }
 
-    public void deactivate() {
-        active = false;
-    }
-
     private class ClientConnector extends Thread {
         private Socket clientSocket;
-       // private DataInputStream input = null;
-        //private DataOutputStream output = null;
         private volatile PrintWriter output = null;
         private volatile BufferedReader input = null;
         private final int id;
@@ -96,8 +78,6 @@ public class CommunicationCenter {
             this.clientSocket = socket;
             this.id = id;
             try {
-               // input = new DataInputStream(clientSocket.getInputStream());
-               // output = new DataOutputStream(clientSocket.getOutputStream());
                 input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 output = new PrintWriter(clientSocket.getOutputStream(), true);
             } catch (IOException e) {
@@ -111,13 +91,10 @@ public class CommunicationCenter {
             StringBuilder msg = new StringBuilder();
             while(active) {
                 try {
-                    System.out.println("Waiting for input");
                     msg = new StringBuilder();
-                    //inputLine = input.readUTF();
                     while ((inputLine = input.readLine()) != null && !inputLine.equals("MessageTerminated")) {
                         msg.append(inputLine);
                     }
-                    System.out.println(msg.toString());
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -137,17 +114,8 @@ public class CommunicationCenter {
         }
 
         public void send(final String msg) {
-            System.out.println("Writing message");
-            System.out.println(msg);
             output.print(msg + "\r\nMessageTerminated\r\n");
             output.flush();
-
-           /* try {
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 }
