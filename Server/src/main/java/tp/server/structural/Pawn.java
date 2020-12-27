@@ -1,5 +1,7 @@
 package tp.server.structural;
 
+import java.util.Arrays;
+
 /**
  * Single pawn with it's location id and ownerId
  */
@@ -15,11 +17,6 @@ public class Pawn implements Cloneable {
         location = field;
         this.owner = playerId;
         location.setOccupied(true);
-        id = assignId();
-    }
-
-    public Pawn() {
-        owner = 0;
         id = assignId();
     }
 
@@ -58,5 +55,13 @@ public class Pawn implements Cloneable {
         catch (CloneNotSupportedException ex){
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        Pawn p = (Pawn)obj;
+        return location.equals(p.location) &&
+                id == p.getId() &&
+                owner == p.getOwner();
     }
 }

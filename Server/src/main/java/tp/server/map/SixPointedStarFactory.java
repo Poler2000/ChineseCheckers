@@ -129,7 +129,14 @@ public class SixPointedStarFactory implements MapFactory{
                 }
                 break;
             case 3:
-                it = map.getFields().iterator();
+                it = map.getMatchingFields(new Filter<Field>() {
+                    @Override
+                    public boolean match(Field field) {
+                        return Corners.determineCorner(field.coordinatesAsXYZ()) == Corners.TOP_LEFT ||
+                                Corners.determineCorner(field.coordinatesAsXYZ()) == Corners.BOTTOM ||
+                                Corners.determineCorner(field.coordinatesAsXYZ()) == Corners.TOP_RIGHT;
+                    }
+                });
 
                 while(it.hasNext()) {
                     Field f = it.next();

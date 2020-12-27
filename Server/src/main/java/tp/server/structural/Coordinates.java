@@ -14,12 +14,6 @@ public class Coordinates {
         this.z = z;
     }
 
-    public Coordinates() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-    }
-
     @Override
     public boolean equals(Object obj) {
         return ((Coordinates)obj).x == x &&

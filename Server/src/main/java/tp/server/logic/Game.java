@@ -35,7 +35,6 @@ public class Game  {
 
         game.init();
         game.run();
-        game.end();
     }
 
     public Game() {
@@ -121,6 +120,9 @@ public class Game  {
             checkForWinner();
             currentPlayer = (currentPlayer % numOfPlayers) + 1;
         }
+        for (int i = 1; i <= numOfPlayers; i++) {
+            communicationCenter.sendMessage(getCurrentGameInfo(i), i);
+        }
     }
 
     /**
@@ -144,19 +146,14 @@ public class Game  {
             pawns.addAll(p.getPawns());
         }
 
-        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, playerId);
-        try
-        {
+        ServerMsg msg = new StateReport(currentPlayer, pawns, winValidator.getWinner(), playerId);
+        try {
             return objectMapper.writeValueAsString(msg);
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    // TODO implement
-    private void end() {
     }
 
     /**
@@ -167,10 +164,17 @@ public class Game  {
     public void processMessage(final String msg, final int fromPlayer) {
         ObjectNode node = null;
         String type = null;
+
+        if (msg.equals("")) {
+            return;
+        }
         try {
             node = new ObjectMapper().readValue(msg, ObjectNode.class);
             if (node.has("type")) {
                 type =  node.get("type").asText();
+            }
+            else {
+                return;
             }
         }
         catch (JsonProcessingException e) {

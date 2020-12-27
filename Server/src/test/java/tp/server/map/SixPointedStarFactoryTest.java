@@ -1,9 +1,6 @@
 package tp.server.map;
 
 import org.junit.Test;
-import tp.server.map.Map;
-import tp.server.map.MapFactory;
-import tp.server.map.SixPointedStarFactory;
 import tp.server.structural.Pawn;
 
 

@@ -12,11 +12,6 @@ public class Step {
         this.destination = field;
     }
 
-    public Step() {
-        this.pawn = null;
-        this.destination = null;
-    }
-
     public Pawn getPawn() {
         return pawn;
     }

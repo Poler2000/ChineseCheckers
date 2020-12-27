@@ -42,15 +42,14 @@ public class MoveValidator {
 
     private boolean isJumpValid(Coordinates pCoord, Step step) {
         final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
-        if ((Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
-                Math.abs(pCoord.z - lCoord.z)) == 4) {
-            if ((Math.abs(pCoord.x - lCoord.x) == 0) || (Math.abs(pCoord.y - lCoord.y) == 0) ||
-                    (Math.abs(pCoord.z - lCoord.z) == 0)) {
-                return (!map.getField(lCoord).isOccupied() && map.getField(
-                        (pCoord.x + lCoord.x) / 2,
-                        (pCoord.y + lCoord.y) / 2,
-                        (pCoord.z + lCoord.z) / 2
-                ).isOccupied());
+        if (isBeyondGoal(pCoord, step, lCoord)) return false;
+        return isDistanceCorrect(pCoord, lCoord);
+    }
+
+    private boolean isBeyondGoal(Coordinates pCoord, Step step, Coordinates lCoord) {
+        if (map.getField(pCoord).getGoalof() == step.getPawn().getOwner()) {
+            if (map.getField(lCoord).getGoalof() != step.getPawn().getOwner()) {
+                return true;
             }
         }
         return false;
@@ -63,6 +62,7 @@ public class MoveValidator {
     private boolean isNeighbourValid(Step step) {
         final Coordinates pCoord = step.getPawn().getLocation().coordinatesAsXYZ();
         final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
+        if (isBeyondGoal(pCoord, step, lCoord)) return false;
         return (Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
                 Math.abs(pCoord.z - lCoord.z)) == 2 && (!step.getDestination().isOccupied());
     }
@@ -70,6 +70,11 @@ public class MoveValidator {
     private boolean isJumpValid(Step step) {
         final Coordinates pCoord = step.getPawn().getLocation().coordinatesAsXYZ();
         final Coordinates lCoord = step.getDestination().coordinatesAsXYZ();
+        if (isBeyondGoal(pCoord, step, lCoord)) return false;
+        return isDistanceCorrect(pCoord, lCoord);
+    }
+
+    private boolean isDistanceCorrect(Coordinates pCoord, Coordinates lCoord) {
         if ((Math.abs(pCoord.x - lCoord.x) + Math.abs(pCoord.y - lCoord.y) +
                 Math.abs(pCoord.z - lCoord.z)) == 4) {
             if ((Math.abs(pCoord.x - lCoord.x) == 0) || (Math.abs(pCoord.y - lCoord.y) == 0) ||
