@@ -64,4 +64,8 @@ public class Pawn implements Cloneable {
                 id == p.getId() &&
                 owner == p.getOwner();
     }
+
+    public static void resetIdCounter() {
+        id_counter = 0;
+    }
 }

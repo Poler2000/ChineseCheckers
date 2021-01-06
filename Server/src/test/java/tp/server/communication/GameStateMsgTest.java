@@ -9,12 +9,13 @@ import tp.server.structural.Pawn;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class GameStateMsgTest {
     @Test
     public void toJSONTest()
     {
+        Pawn.resetIdCounter();
+        Field.resetIdCounter();
         ArrayList<Pawn> pawns = new ArrayList<>();
         pawns.add(new Pawn(new Field(-1,-2,3), 2));
         pawns.add(new Pawn(new Field(1,2,-3), 3));
