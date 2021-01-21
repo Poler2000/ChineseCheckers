@@ -37,7 +37,7 @@ public abstract class AbstractPlayer {
         while (steps.hasNext()) {
             Step step = steps.next();
             for (Pawn pawn : pawns) {
-                if(pawn == step.getPawn()) {
+                if (pawn == step.getPawn()) {
                     pawn.move(step.getDestination());
                     break;
                 }
@@ -56,5 +56,9 @@ public abstract class AbstractPlayer {
     }
 
     public void setMove(final Move move) {
+    }
+
+    public static void resetIdCounter() {
+        id_counter = 0;
     }
 }

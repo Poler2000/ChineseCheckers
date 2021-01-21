@@ -25,7 +25,8 @@ public class CommunicationCenterTest {
     //@Before
     public void setup() {
         try {
-            center = new CommunicationCenter(1410, new Game());
+            //Game game = new Game();
+            center = new CommunicationCenter(1420, new Game());
             c1 = new FakeClient();
             c2 = new FakeClient();
         }
@@ -42,22 +43,15 @@ public class CommunicationCenterTest {
             public void run() {
                 try {
                     Thread.sleep(100);
-                    c1.init("localhost", 1410);
+                    c1.init("localhost", 1420);
                     c1.sendRegister();
                     Thread.sleep(50);
-                    c2.init("localhost", 1410);
+                    c2.init("localhost", 1420);
                     c2.sendRegister();
                     Thread.sleep(50);
                     center.stopListeningForNewClients();
-                    /*c1.sendSetup();
-
-                    while (true) {
-                        Thread.sleep(100);
-                        c1.sendMove();
-                        Thread.sleep(100);
-                        c2.sendMove();
-                    }*/
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
@@ -68,10 +62,4 @@ public class CommunicationCenterTest {
         int n = center.establishConnections();
         assertEquals(2, n);
     }
-
-    @Test
-    public void sendMessageTest() {
-
-    }
-
 }

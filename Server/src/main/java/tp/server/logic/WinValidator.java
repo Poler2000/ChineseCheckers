@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class WinValidator {
     private ArrayList<AbstractPlayer> players;
+    private int winner = 0;
 
     public WinValidator(ArrayList<AbstractPlayer> players) {
         this.players = players;
@@ -28,7 +29,15 @@ public class WinValidator {
                     break;
                 }
             }
+            if (result) {
+                winner = p.getId();
+                return result;
+            }
         }
         return result;
+    }
+
+    public int getWinner() {
+        return winner;
     }
 }

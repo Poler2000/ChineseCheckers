@@ -21,6 +21,7 @@ public class FakeClient {
     private static int idCounter = 0;
     private AbstractPlayer p;
     private Map map;
+    private boolean receivedMsg = false;
 
     public void init(String address, int port) {
         try
@@ -62,5 +63,13 @@ public class FakeClient {
 
     public String sendSetup() {
         return "{ \"msgType\": \"setup\"}";
+    }
+
+    public boolean isReceivedMsg() {
+        return receivedMsg;
+    }
+
+    public void setReceivedMsg(boolean receivedMsg) {
+        this.receivedMsg = receivedMsg;
     }
 }

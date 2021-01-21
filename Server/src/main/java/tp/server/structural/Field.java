@@ -71,4 +71,8 @@ public class Field implements Cloneable {
         return Arrays.equals(coords, f.coords) &&
                 this.playerGoal == f.playerGoal;
     }
+
+    public static void resetIdCounter() {
+        id_counter = 0;
+    }
 }

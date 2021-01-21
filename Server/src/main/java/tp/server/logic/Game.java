@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import tp.server.communication.*;
+import tp.server.db.DBConnector;
 import tp.server.map.Map;
 import tp.server.map.MapFactory;
 import tp.server.map.SixPointedStarFactory;
@@ -18,6 +19,7 @@ public class Game  {
     private boolean isRunning;
     private MoveValidator moveValidator;
     private WinValidator winValidator;
+    private DBConnector dbConnector;
     private ArrayList<AbstractPlayer> players;
     private CommunicationCenter communicationCenter;
     private Map map;
@@ -35,7 +37,6 @@ public class Game  {
 
         game.init();
         game.run();
-        game.end();
     }
 
     public Game() {
@@ -48,13 +49,25 @@ public class Game  {
      * initialize needed components
      */
     private void init() {
+        initDatabase();
+
         initCommunication();
 
         initPlayers();
 
+        initGameInDB();
+
         sendServerConfig();
 
         moveValidator = new MoveValidator(map);
+    }
+
+    private void initGameInDB() {
+        dbConnector.createGame(numOfPlayers);
+    }
+
+    private void initDatabase() {
+        dbConnector = new DBConnector();
     }
 
     /**
@@ -118,9 +131,17 @@ public class Game  {
             } while (!moveValidator.Validate(move));
 
             players.get(currentPlayer - 1).makeMove(move);
+            insertMoveToDB(currentPlayer, move);
             checkForWinner();
             currentPlayer = (currentPlayer % numOfPlayers) + 1;
         }
+        for (int i = 1; i <= numOfPlayers; i++) {
+            communicationCenter.sendMessage(getCurrentGameInfo(i), i);
+        }
+    }
+
+    private void insertMoveToDB(int currentPlayer, Move move) {
+        dbConnector.addMove(currentPlayer, move);
     }
 
     /**
@@ -144,19 +165,14 @@ public class Game  {
             pawns.addAll(p.getPawns());
         }
 
-        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, playerId);
-        try
-        {
+        ServerMsg msg = new StateReport(currentPlayer, pawns, winValidator.getWinner(), playerId);
+        try {
             return objectMapper.writeValueAsString(msg);
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    // TODO implement
-    private void end() {
     }
 
     /**
@@ -167,10 +183,17 @@ public class Game  {
     public void processMessage(final String msg, final int fromPlayer) {
         ObjectNode node = null;
         String type = null;
+
+        if (msg.equals("")) {
+            return;
+        }
         try {
             node = new ObjectMapper().readValue(msg, ObjectNode.class);
             if (node.has("type")) {
                 type =  node.get("type").asText();
+            }
+            else {
+                return;
             }
         }
         catch (JsonProcessingException e) {
