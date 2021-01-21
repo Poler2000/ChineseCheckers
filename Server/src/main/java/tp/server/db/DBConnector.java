@@ -7,9 +7,11 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import tp.server.structural.Move;
+import tp.server.structural.Replay;
 import tp.server.structural.Step;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBConnector {
@@ -84,5 +86,17 @@ public class DBConnector {
         Query query = session.createQuery("from MovesEntity where gameId = :id");
         query.setParameter("id", gameId);
         return query.list();
+    }
+
+    public List<Replay> getGames() {
+        Session session = factory.openSession();
+
+        Query query = session.createQuery("from GamesEntity");
+        List<GamesEntity> gamesEntities = query.list();
+        List<Replay> replays = new ArrayList<>();
+        for (GamesEntity g : gamesEntities) {
+            replays.add(new Replay(g));
+        }
+        return replays;
     }
 }

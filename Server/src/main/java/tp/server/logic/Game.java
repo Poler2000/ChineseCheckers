@@ -181,6 +181,7 @@ public class Game  {
      * @param fromPlayer specify who sent the message
      */
     public void processMessage(final String msg, final int fromPlayer) {
+        System.out.println(msg);
         ObjectNode node = null;
         String type = null;
 
@@ -211,8 +212,24 @@ public class Game  {
             case "playerMove":
                 handleMove(fromPlayer, node);
                 break;
+            case "replayRequest":
+                sendReplayList(fromPlayer);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void sendReplayList(int forPlayer) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ServerMsg msg = new ReplayList(dbConnector.getGames(), forPlayer);
+        try {
+            String msgString = objectMapper.writeValueAsString(msg);
+            communicationCenter.sendMessage(msgString, forPlayer);
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
     }
 

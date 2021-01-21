@@ -59,6 +59,7 @@ public class CommunicationCenter {
     public void sendMessage(final String msg, int receiverId) {
         if (clientConnectors.get(receiverId - 1) != null) {
             clientConnectors.get(receiverId - 1).send(msg);
+            System.out.println(msg);
         }
     }
 
