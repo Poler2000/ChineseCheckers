@@ -2,6 +2,7 @@ package tp.server.db;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Entity
 @Table(name = "games", schema = "chinese_checkers_db", catalog = "")
@@ -9,6 +10,7 @@ public class GamesEntity {
     private int id;
     private Integer players;
     private Timestamp start;
+    private Collection<MovesEntity> movesById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -45,11 +47,11 @@ public class GamesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GamesEntity that = (GamesEntity) o;
+        GamesEntity entity = (GamesEntity) o;
 
-        if (id != that.id) return false;
-        if (players != null ? !players.equals(that.players) : that.players != null) return false;
-        if (start != null ? !start.equals(that.start) : that.start != null) return false;
+        if (id != entity.id) return false;
+        if (players != null ? !players.equals(entity.players) : entity.players != null) return false;
+        if (start != null ? !start.equals(entity.start) : entity.start != null) return false;
 
         return true;
     }
@@ -60,5 +62,14 @@ public class GamesEntity {
         result = 31 * result + (players != null ? players.hashCode() : 0);
         result = 31 * result + (start != null ? start.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "gamesByGameId")
+    public Collection<MovesEntity> getMovesById() {
+        return movesById;
+    }
+
+    public void setMovesById(Collection<MovesEntity> movesById) {
+        this.movesById = movesById;
     }
 }

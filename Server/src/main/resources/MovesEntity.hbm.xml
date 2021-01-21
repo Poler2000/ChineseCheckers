@@ -7,7 +7,11 @@
     <class name="tp.server.db.MovesEntity" table="moves" schema="chinese_checkers_db">
         <id name="id">
             <column name="id" sql-type="int(11)"/>
+            <generator class="identity" />
         </id>
+        <property name="gameId">
+            <column name="game_id" sql-type="int(11)" not-null="true"/>
+        </property>
         <property name="playerId">
             <column name="player_id" sql-type="int(11)" not-null="true"/>
         </property>
@@ -23,5 +27,8 @@
         <property name="destZ">
             <column name="dest_z" sql-type="int(11)" not-null="true"/>
         </property>
+        <!--  <many-to-one name="gamesByGameId" class="tp.server.db.GamesEntity">
+            <column name="game_id" not-null="true"/>
+        </many-to-one> !-->
     </class>
 </hibernate-mapping>

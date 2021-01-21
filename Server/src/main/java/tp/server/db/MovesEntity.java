@@ -6,11 +6,13 @@ import javax.persistence.*;
 @Table(name = "moves", schema = "chinese_checkers_db", catalog = "")
 public class MovesEntity {
     private int id;
+    private Integer gameId;
     private Integer playerId;
     private Integer pawnId;
     private Integer destX;
     private Integer destY;
     private Integer destZ;
+   // private GamesEntity gamesByGameId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -20,6 +22,16 @@ public class MovesEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "game_id", nullable = true)
+    public Integer getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
     @Basic
@@ -77,14 +89,15 @@ public class MovesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MovesEntity that = (MovesEntity) o;
+        MovesEntity entity = (MovesEntity) o;
 
-        if (id != that.id) return false;
-        if (playerId != null ? !playerId.equals(that.playerId) : that.playerId != null) return false;
-        if (pawnId != null ? !pawnId.equals(that.pawnId) : that.pawnId != null) return false;
-        if (destX != null ? !destX.equals(that.destX) : that.destX != null) return false;
-        if (destY != null ? !destY.equals(that.destY) : that.destY != null) return false;
-        if (destZ != null ? !destZ.equals(that.destZ) : that.destZ != null) return false;
+        if (id != entity.id) return false;
+        if (gameId != null ? !gameId.equals(entity.gameId) : entity.gameId != null) return false;
+        if (playerId != null ? !playerId.equals(entity.playerId) : entity.playerId != null) return false;
+        if (pawnId != null ? !pawnId.equals(entity.pawnId) : entity.pawnId != null) return false;
+        if (destX != null ? !destX.equals(entity.destX) : entity.destX != null) return false;
+        if (destY != null ? !destY.equals(entity.destY) : entity.destY != null) return false;
+        if (destZ != null ? !destZ.equals(entity.destZ) : entity.destZ != null) return false;
 
         return true;
     }
@@ -92,6 +105,7 @@ public class MovesEntity {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + (gameId != null ? gameId.hashCode() : 0);
         result = 31 * result + (playerId != null ? playerId.hashCode() : 0);
         result = 31 * result + (pawnId != null ? pawnId.hashCode() : 0);
         result = 31 * result + (destX != null ? destX.hashCode() : 0);
@@ -99,4 +113,14 @@ public class MovesEntity {
         result = 31 * result + (destZ != null ? destZ.hashCode() : 0);
         return result;
     }
+
+   /* @ManyToOne
+    @JoinColumn(name = "game_id", referencedColumnName = "id")
+    public GamesEntity getGamesByGameId() {
+        return gamesByGameId;
+    }
+
+    public void setGamesByGameId(GamesEntity gamesByGameId) {
+        this.gamesByGameId = gamesByGameId;
+    }*/
 }

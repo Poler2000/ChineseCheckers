@@ -7,6 +7,7 @@
     <class name="tp.server.db.GamesEntity" table="games" schema="chinese_checkers_db">
         <id name="id">
             <column name="id" sql-type="int(11)"/>
+            <generator class="identity" />
         </id>
         <property name="players">
             <column name="players" sql-type="int(11)" not-null="true"/>
@@ -14,5 +15,11 @@
         <property name="start">
             <column name="start" sql-type="datetime" not-null="true"/>
         </property>
+        <set name="movesById" inverse="true">
+            <key>
+                <column name="game_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="tp.server.db.MovesEntity"/>
+        </set>
     </class>
 </hibernate-mapping>
