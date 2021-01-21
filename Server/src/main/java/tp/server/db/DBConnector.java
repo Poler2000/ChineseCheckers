@@ -23,7 +23,6 @@ public class DBConnector {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
         }
-        System.out.println("ok");
     }
 
     public boolean createGame(final int players) {
@@ -38,7 +37,6 @@ public class DBConnector {
             gameId = (Integer) session.save(entity);
 
             tx.commit();
-            System.out.println("ok");
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
@@ -52,8 +50,6 @@ public class DBConnector {
 
     public boolean addMove(final int playerId, final Move move) {
         if (gameId < 1) {
-            System.out.println("not ok");
-
             return false;
         }
         Session session = factory.openSession();
