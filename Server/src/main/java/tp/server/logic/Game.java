@@ -216,16 +216,69 @@ public class Game  {
                 sendReplayList(fromPlayer);
                 break;
             case "loadReplay":
-                loadReplayForPlayer();
+                loadReplayForPlayer(node, fromPlayer);
                 break;
             default:
                 break;
         }
     }
 
-    private void loadReplayForPlayer() {
+    private void loadReplayForPlayer(ObjectNode node, int forPlayer) {
+        int id = 0;
+        if (node.has("id")) {
+            id =  node.get("id").asInt();
+        }
+        if (id < 1) {
+            return;
+        }
+        ArrayList<Move> moves = MoveParser.parseMoves(dbConnector.getMovesForGame(id), map);
 
+        performReplay(forPlayer, moves, id);
     }
+
+    private void performReplay(int forPlayer, ArrayList<Move> moves, int gameId) {
+        MapFactory mapFactory = new SixPointedStarFactory();
+        int playersNum = dbConnector.getGames().get(gameId).players;
+        Map repMap = mapFactory.createMap(playersNum);
+        ArrayList<Player> repPlayers = new ArrayList<>();
+
+        for (int i = 1; i <= playersNum; i++) {
+            repPlayers.add(new Player(mapFactory.createPawns(i, playersNum)));
+        }
+        int i = 1;
+        try {
+            communicationCenter.sendMessage(new ObjectMapper().writeValueAsString(new ServerConfig(playersNum, GameState.INPROGRESS, repMap.getFields(), forPlayer)), forPlayer);
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        for (Move m : moves) {
+            repPlayers.get(i - 1).makeMove(m);
+            String msg = getCurrentGameInfo(repPlayers, 0);
+            communicationCenter.sendMessage(msg, forPlayer);
+            i = (i % playersNum) + 1;
+        }
+    }
+
+    private String getCurrentGameInfo(ArrayList<Player> repPlayers, int i) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
+
+        for (AbstractPlayer p : repPlayers) {
+            pawns.addAll(p.getPawns());
+        }
+
+        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, 0);
+        try {
+            return objectMapper.writeValueAsString(msg);
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private void sendReplayList(int forPlayer) {
         ObjectMapper objectMapper = new ObjectMapper();

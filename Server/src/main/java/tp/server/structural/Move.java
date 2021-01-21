@@ -1,5 +1,7 @@
 package tp.server.structural;
 
+import tp.server.db.MovesEntity;
+
 import java.util.ArrayList;
 
 /**
