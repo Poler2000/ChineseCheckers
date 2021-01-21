@@ -14,4 +14,6 @@ public interface UserEventsHandler {
     public void handleGameStartReq();
     public void handleTurnEndReq();
     public void handleServerConnReq(String addr);
+    public void handleReplayRequest();
+    public void handleReplayRequest(Integer id);
 }

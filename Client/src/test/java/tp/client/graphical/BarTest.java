@@ -33,8 +33,9 @@ public class BarTest {
 		JButton mockbtn = Mockito.spy(JButton.class);
 		JButton mockbtn2 = Mockito.spy(JButton.class);
 		JLabel mocklbl = Mockito.spy(JLabel.class);
+		JButton mockbtn3 = Mockito.spy(JButton.class);
 		
-		ActionsGUI undertest = new ActionsGUI(mockman, mockbtn, mockbtn2, mocklbl);
+		ActionsGUI undertest = new ActionsGUI(mockman, mockbtn, mockbtn2, mocklbl, mockbtn3);
 		undertest.setLabel("hello");
 		Mockito.verify(mocklbl).setText("hello");
 		undertest.enableStartGame(true);

@@ -13,6 +13,7 @@ public class ActionsGUI extends JPanel{
     private JButton startGameButton;
     private JButton endTurnButton;
     private JLabel statusText;
+    private JButton replayButton;
 
     /**
      * The default constructor
@@ -23,19 +24,23 @@ public class ActionsGUI extends JPanel{
      * @param etb optional: the end turn button
      * @param slbl optional: the game status label
      */
-    public ActionsGUI(final GUIManager listener, JButton sgb, JButton etb, JLabel slbl){
+    public ActionsGUI(final GUIManager listener, JButton sgb, JButton etb, JLabel slbl, JButton rplbtn){
         super();
         startGameButton = new JButton("Start gry");
         endTurnButton = new JButton("Koniec tury");
         statusText = new JLabel("Czekam na połączenie");
-        if (sgb != null && etb != null && slbl != null) {
+        replayButton = new JButton("Odtwórz nagranie");
+        if (sgb != null && etb != null && slbl != null && rplbtn != null) {
         	startGameButton = sgb;
         	endTurnButton = etb;
         	statusText = slbl;
+        	replayButton = rplbtn;
         }
+        add(replayButton);
         add(startGameButton);
         add(endTurnButton);
         add(statusText);
+        replayButton.setEnabled(false);
         startGameButton.setEnabled(false);
         endTurnButton.setEnabled(false);
 
@@ -48,6 +53,12 @@ public class ActionsGUI extends JPanel{
         endTurnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 listener.handleEndTurn();
+            }
+        });
+        
+        replayButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                listener.handleRequestReplay();
             }
         });
     }
@@ -74,6 +85,10 @@ public class ActionsGUI extends JPanel{
      */
     public void enableEndTurn(boolean doit){
         endTurnButton.setEnabled(doit);
+    }
+    
+    public void enableRequestReplay(boolean doit) {
+    	replayButton.setEnabled(doit);
     }
 
 }

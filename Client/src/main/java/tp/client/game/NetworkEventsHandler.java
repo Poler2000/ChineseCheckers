@@ -2,6 +2,7 @@ package tp.client.game;
 
 import tp.client.structural.ServerConfig;
 import tp.client.structural.StateReport;
+import tp.client.structural.Replay;
 
 /**
  * A simple interface describing a client
@@ -14,5 +15,6 @@ public interface NetworkEventsHandler {
     public void handleNewGameState(StateReport recv);
     public void handleServerDisconnect();
     public void handleServerConnect();
+    public void handleReplayList(Replay[] list);
 
 }

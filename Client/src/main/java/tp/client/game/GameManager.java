@@ -167,6 +167,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     public void handleServerDisconnect(){
         gui.setNetworkLabel("Rozłączony");
         gui.disableTurn(true);
+        gui.disableReplay(true);
         currentState = GameState.UNKNOWN;
     }
     
@@ -175,6 +176,7 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
      */
     public void handleServerConnect(){
         gui.setNetworkLabel("Połączony");
+        gui.disableReplay(false);
     }
     
     /**
@@ -183,4 +185,25 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     public Object getMapLock() {
     	return stateLock;
     }
+
+
+	@Override
+	public void handleReplayRequest() {
+		network.getReplays();
+		
+	}
+
+
+	@Override
+	public void handleReplayRequest(Integer id) {
+		network.loadReplay(id);
+		
+	}
+
+
+	@Override
+	public void handleReplayList(Replay[] list) {
+		gui.showReplays(list);
+		
+	}
 }

@@ -64,6 +64,16 @@ public class NetworkManager {
     	sock.send(msg.toString());
     }
     
+    public void getReplays() {
+    	ReplayRequest msg = new ReplayRequest();
+    	sock.send(msg.toString());
+    }
+    
+    public void loadReplay(Integer id) {
+    	ReplayRequest msg = new ReplayRequest(id);
+    	sock.send(msg.toString());
+    }
+    
     /**
      * Called to process a new message and
      * callback the handler
@@ -88,6 +98,13 @@ public class NetworkManager {
     				upstream.handleNewGameState(newState);
     			}
     		}
+    		if (incoming.getString("type").equals("replayList")) {
+    			Replay[] gotrepl = ReplayParser.parse(incoming);
+    			if (gotrepl != null && upstream != null) {
+    				upstream.handleReplayList(gotrepl);
+    			}
+    		}
+    		
     	}
     	}
     	catch (JSONException ex) {

@@ -18,7 +18,7 @@ public class GUICreator {
 	}
 	///Create an ActionsGUI
 	public ActionsGUI createActions(GUIManager up) {
-		return new ActionsGUI(up,null,null,null);
+		return new ActionsGUI(up,null,null,null,null);
 	}
 	///Create a JFrame
 	public JFrame createWindow(String title) {

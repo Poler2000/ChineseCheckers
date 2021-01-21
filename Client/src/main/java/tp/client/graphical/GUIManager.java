@@ -196,6 +196,20 @@ public class GUIManager implements PawnMovementHandler{
             upstream.handleServerConnReq(addr);
         }
     }
+    
+    public void handleRequestReplay() {
+    	if (upstream != null) {
+    		upstream.handleReplayRequest();
+    	}
+    	
+    }
+    
+    public void handleLoadReplay(int id) {
+    	if (upstream != null) {
+    		upstream.handleReplayRequest(id);
+    	}
+    	
+    }
 
     /**
      * Disable user game interaction
@@ -213,6 +227,10 @@ public class GUIManager implements PawnMovementHandler{
     public void disableGameStart(boolean iff){
         userBar.enableStartGame(!iff);
     }
+    
+    public void disableReplay(boolean iff) {
+    	userBar.enableRequestReplay(!iff);
+    }
 
     /**
      * Set game status label
@@ -228,5 +246,10 @@ public class GUIManager implements PawnMovementHandler{
      */
     public void setNetworkLabel(String text){
         networkBar.setConnStatus(text);
+    }
+    
+    public void showReplays(Replay[] games) {
+    	ReplaySelectionDialog chooser = new ReplaySelectionDialog(games, this);
+    	chooser.setVisible(true);
     }
 }
