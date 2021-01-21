@@ -14,21 +14,21 @@ public class SocketTest {
 		
 		ConnMan undertest = new ConnMan(callb);
 		//wait for networking
-		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(10);
+		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
 		
 		undertest.connect("localhost");
-		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(10);
+		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
 		
 		undertest.connect("localhost");
-		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(10);
+		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
 		
 		undertest.send("Hello!");
-		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(10);
+		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
 		
 		assertEquals(fserv.lastmsgs, "Hello!\nMessageTerminated\n");
 		
 		fserv.write("We do what we must, because we can!\r\nMessageTerminated\r\n");
-		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(10);
+		java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
 		
 		Mockito.verify(callb).handleIncoming("We do what we must, because we can!");
 		Mockito.verify(callb, Mockito.times(2)).connStateChanged(true);
