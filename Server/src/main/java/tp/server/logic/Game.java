@@ -215,9 +215,16 @@ public class Game  {
             case "replayRequest":
                 sendReplayList(fromPlayer);
                 break;
+            case "loadReplay":
+                loadReplayForPlayer();
+                break;
             default:
                 break;
         }
+    }
+
+    private void loadReplayForPlayer() {
+
     }
 
     private void sendReplayList(int forPlayer) {
