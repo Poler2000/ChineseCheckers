@@ -11,7 +11,12 @@ import javax.swing.ListSelectionModel;
 
 import tp.client.structural.Replay;
 
-
+/**
+ * A dialog enabling the user to select one replay
+ * and returning its id
+ * @author anon
+ *
+ */
 public class ReplaySelectionDialog extends JFrame{
 	private Replay[] givenReps;
 	private GUIManager upstream;

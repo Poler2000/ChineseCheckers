@@ -197,6 +197,9 @@ public class GUIManager implements PawnMovementHandler{
         }
     }
     
+    /**
+     * Send replay list request
+     */
     public void handleRequestReplay() {
     	if (upstream != null) {
     		upstream.handleReplayRequest();
@@ -204,6 +207,10 @@ public class GUIManager implements PawnMovementHandler{
     	
     }
     
+    /**
+     * Send replay load request
+     * @param id replay id
+     */
     public void handleLoadReplay(int id) {
     	if (upstream != null) {
     		upstream.handleReplayRequest(id);
@@ -228,6 +235,10 @@ public class GUIManager implements PawnMovementHandler{
         userBar.enableStartGame(!iff);
     }
     
+    /**
+     * Disable load replay button
+     * @param iff disable?
+     */
     public void disableReplay(boolean iff) {
     	userBar.enableRequestReplay(!iff);
     }
@@ -248,6 +259,10 @@ public class GUIManager implements PawnMovementHandler{
         networkBar.setConnStatus(text);
     }
     
+    /**
+     * Display replay selection dialog
+     * @param games replay list
+     */
     public void showReplays(Replay[] games) {
     	ReplaySelectionDialog chooser = new ReplaySelectionDialog(games, this);
     	chooser.setVisible(true);

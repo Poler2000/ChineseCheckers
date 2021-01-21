@@ -186,21 +186,27 @@ public class GameManager implements UserEventsHandler, NetworkEventsHandler{
     	return stateLock;
     }
 
-
+    /**
+     * Send request for replay list
+     */
 	@Override
 	public void handleReplayRequest() {
 		network.getReplays();
 		
 	}
 
-
+	/**
+	 * Send request to load replay
+	 */
 	@Override
 	public void handleReplayRequest(Integer id) {
 		network.loadReplay(id);
 		
 	}
 
-
+	/**
+	 * Show replay selection dialog
+	 */
 	@Override
 	public void handleReplayList(Replay[] list) {
 		gui.showReplays(list);

@@ -64,11 +64,18 @@ public class NetworkManager {
     	sock.send(msg.toString());
     }
     
+    /**
+     * Send request for available replays
+     */
     public void getReplays() {
     	ReplayRequest msg = new ReplayRequest();
     	sock.send(msg.toString());
     }
     
+    /**
+     * Load a replay 
+     * @param id replay id
+     */
     public void loadReplay(Integer id) {
     	ReplayRequest msg = new ReplayRequest(id);
     	sock.send(msg.toString());
@@ -98,6 +105,7 @@ public class NetworkManager {
     				upstream.handleNewGameState(newState);
     			}
     		}
+    		///Handle list of available replays
     		if (incoming.getString("type").equals("replayList")) {
     			Replay[] gotrepl = ReplayParser.parse(incoming);
     			if (gotrepl != null && upstream != null) {

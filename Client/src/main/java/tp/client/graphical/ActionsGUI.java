@@ -87,6 +87,10 @@ public class ActionsGUI extends JPanel{
         endTurnButton.setEnabled(doit);
     }
     
+    /**
+     * enable/disable the load replay button
+     * @param doit en/dis
+     */
     public void enableRequestReplay(boolean doit) {
     	replayButton.setEnabled(doit);
     }

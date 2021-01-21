@@ -5,7 +5,17 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+/**
+ * A parser for a list of replays
+ * @author anon
+ *
+ */
 public class ReplayParser {
+	/**
+	 * Parse replay list packet
+	 * @param source the JSON packet
+	 * @return replays/null on error
+	 */
 	public static Replay[] parse(JSONObject source){
 		try {
 			JSONArray games = source.getJSONArray("games");

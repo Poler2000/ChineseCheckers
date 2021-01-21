@@ -86,4 +86,30 @@ public class ParserTest {
 		assertEquals(goodState.deployment[1].playerid, 2);
 				
 	}
+	
+	@Test
+	public void ReplayParserTest() {
+		String testJSON =
+			"{" +
+					 "\"type\": \"replayList\"," +
+					 "\"games\": [" +
+					        "{\"id\": 1, \"players\": 2, \"date\": \"2020-01-12 18:00\"}," +
+					        "{\"id\": 5, \"players\": 6, \"date\": \"2020-05-11 07:11\"}," +
+					        "{\"id\": 8, \"players\": 3, \"date\": \"2020-11-16 11:00\"}" +
+					        "]," +
+			"}";
+		
+		JSONObject input = new JSONObject(testJSON);
+		Replay[] result = ReplayParser.parse(input);
+		assertEquals(result.length, 3);
+		assertEquals(result[1].id, 5);
+		assertEquals(result[1].players, 6);
+		assertEquals(result[1].date, "2020-05-11 07:11");
+		
+		String malformed = "{}";
+		JSONObject empty = new JSONObject(malformed);
+		Replay[] failed = ReplayParser.parse(empty);
+		assertEquals(failed, null);
+				
+	}
 }
