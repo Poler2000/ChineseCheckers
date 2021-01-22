@@ -33,12 +33,18 @@ public abstract class AbstractPlayer {
     // executes validated move
     public void makeMove(final Move move) {
         Iterator<Step> steps = move.getSteps().iterator();
-
         while (steps.hasNext()) {
             Step step = steps.next();
+            System.out.println(step.getPawn().getId());
+            System.out.println(step.getDestination().getId());
+            System.out.println(step.getDestination().coordinatesAsXYZ().x);
+            System.out.println(step.getDestination().coordinatesAsXYZ().y);
+            System.out.println(step.getDestination().coordinatesAsXYZ().z);
+
             for (Pawn pawn : pawns) {
-                if (pawn == step.getPawn()) {
+                if (pawn.equals(step.getPawn())) {
                     pawn.move(step.getDestination());
+                    System.out.println("here");
                     break;
                 }
             }

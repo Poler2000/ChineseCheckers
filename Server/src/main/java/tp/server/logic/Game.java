@@ -231,20 +231,21 @@ public class Game  {
         if (id < 1) {
             return;
         }
-        ArrayList<Move> moves = MoveParser.parseMoves(dbConnector.getMovesForGame(id), map);
 
-        performReplay(forPlayer, moves, id);
+        performReplay(forPlayer, id);
     }
 
-    private void performReplay(int forPlayer, ArrayList<Move> moves, int gameId) {
+    private void performReplay(int forPlayer, int gameId) {
         MapFactory mapFactory = new SixPointedStarFactory();
-        int playersNum = dbConnector.getGames().get(gameId).players;
+        int playersNum = dbConnector.getGames().get(gameId - 1).players;
         Map repMap = mapFactory.createMap(playersNum);
-        ArrayList<Player> repPlayers = new ArrayList<>();
+        ArrayList<AbstractPlayer> repPlayers = new ArrayList<>();
 
         for (int i = 1; i <= playersNum; i++) {
             repPlayers.add(new Player(mapFactory.createPawns(i, playersNum)));
         }
+        ArrayList<Move> moves = MoveParser.parseMoves(dbConnector.getMovesForGame(gameId), repMap, repPlayers);
+
         int i = 1;
         try {
             communicationCenter.sendMessage(new ObjectMapper().writeValueAsString(new ServerConfig(playersNum, GameState.INPROGRESS, repMap.getFields(), forPlayer)), forPlayer);
@@ -255,12 +256,17 @@ public class Game  {
         for (Move m : moves) {
             repPlayers.get(i - 1).makeMove(m);
             String msg = getCurrentGameInfo(repPlayers, 0);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             communicationCenter.sendMessage(msg, forPlayer);
             i = (i % playersNum) + 1;
         }
     }
 
-    private String getCurrentGameInfo(ArrayList<Player> repPlayers, int i) {
+    private String getCurrentGameInfo(ArrayList<AbstractPlayer> repPlayers, int i) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         ArrayList<Pawn> pawns = new ArrayList<Pawn>();
