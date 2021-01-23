@@ -3,29 +3,41 @@ package tp.server.logic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import tp.server.communication.*;
 import tp.server.db.DBConnector;
 import tp.server.map.Map;
 import tp.server.map.MapFactory;
-import tp.server.map.SixPointedStarFactory;
 import tp.server.structural.GameState;
 import tp.server.structural.Move;
 import tp.server.structural.Pawn;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
+@Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.INTERFACES)
 public class Game  {
+    @Value("false")
     private boolean isRunning;
     private MoveValidator moveValidator;
     private WinValidator winValidator;
     private DBConnector dbConnector;
+    private Map map;
     private ArrayList<AbstractPlayer> players;
     private CommunicationCenter communicationCenter;
-    private Map map;
     private int numOfPlayers;
     private int currentPlayer = 1;
     private GameState gameState;
+    private static BeanFactory beanFactory;
 
     /**
      * Entry point.
@@ -33,13 +45,17 @@ public class Game  {
      * @param args
      */
     public static void main(String[] args) {
-        Game game = new Game();
+        Resource r = new ClassPathResource("spring-config.xml");
+        beanFactory = new XmlBeanFactory(r);
+        Game game = (Game)beanFactory.getBean("game");
 
         game.init();
         game.run();
     }
 
     public Game() {
+        System.out.println(currentPlayer);
+        System.out.println("Hello Game!");
         isRunning = true;
         players = new ArrayList<>();
         gameState = GameState.UNSTARTABLE;
@@ -59,7 +75,7 @@ public class Game  {
 
         sendServerConfig();
 
-        moveValidator = new MoveValidator(map);
+        moveValidator = (MoveValidator) beanFactory.getBean("mv");
     }
 
     private void initGameInDB() {
@@ -92,8 +108,8 @@ public class Game  {
         int numOfBots = 0;
         numOfPlayers = communicationCenter.establishConnections();
 
-        MapFactory mapFactory = new SixPointedStarFactory();
-        map = mapFactory.createMap(numOfPlayers);
+        MapFactory mapFactory = (MapFactory) beanFactory.getBean("mapFactory");
+        map = (Map) beanFactory.getBean("map");
 
         for(int i = 1; i <= numOfPlayers - numOfBots && i < 7; i++) {
             players.add(new Player(mapFactory.createPawns(i, numOfPlayers)));
@@ -107,12 +123,7 @@ public class Game  {
     }
 
     private void initCommunication() {
-        try {
-            communicationCenter = new CommunicationCenter(1410, this);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        communicationCenter = (CommunicationCenter) beanFactory.getBean("cc");
     }
 
     /**
@@ -128,7 +139,7 @@ public class Game  {
                     communicationCenter.sendMessage(getCurrentGameInfo(i), i);
                 }
                 move = players.get(currentPlayer - 1).proposeMove();
-            } while (!moveValidator.Validate(move));
+            } while (!moveValidator.validate(move));
 
             players.get(currentPlayer - 1).makeMove(move);
             insertMoveToDB(currentPlayer, move);
@@ -236,9 +247,9 @@ public class Game  {
     }
 
     private void performReplay(int forPlayer, int gameId) {
-        MapFactory mapFactory = new SixPointedStarFactory();
-        int playersNum = dbConnector.getGames().get(gameId - 1).players;
-        Map repMap = mapFactory.createMap(playersNum);
+        MapFactory mapFactory = (MapFactory) beanFactory.getBean("mapFactory");
+        int playersNum = dbConnector.getGameById(gameId).players;
+        Map repMap = (Map)beanFactory.getBean("map");
         ArrayList<AbstractPlayer> repPlayers = new ArrayList<>();
 
         for (int i = 1; i <= playersNum; i++) {
@@ -256,13 +267,17 @@ public class Game  {
         for (Move m : moves) {
             repPlayers.get(i - 1).makeMove(m);
             String msg = getCurrentGameInfo(repPlayers, 0);
+            communicationCenter.sendMessage(msg, forPlayer);
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            communicationCenter.sendMessage(msg, forPlayer);
             i = (i % playersNum) + 1;
+        }
+        if (gameState == GameState.INPROGRESS) {
+            communicationCenter.sendMessage(getCurrentGameInfo(forPlayer), forPlayer);
         }
     }
 
@@ -335,19 +350,23 @@ public class Game  {
         if (numOfPlayers > 1) {
             gameState = GameState.READY;
         }
-        if (numOfPlayers > 6) {
+        if (numOfPlayers > 6 || numOfPlayers == 5) {
             gameState = GameState.UNSTARTABLE;
         }
 
         for(int i = 1; i <= numOfPlayers; i++) {
             try {
-                MapFactory mapFactory = new SixPointedStarFactory();
-                map = mapFactory.createEmptyMap();
+                map = (Map)beanFactory.getBean("emptyMap");
                 communicationCenter.sendMessage(mapper.writeValueAsString(new ServerConfig(numOfPlayers, gameState, map.getFields(), i)), i);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 }

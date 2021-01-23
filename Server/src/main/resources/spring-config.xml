@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- <bean id="store" class="org.baeldung.store.Store">
+        <constructor-arg type="ItemImpl1" index="0" name="item" ref="item1" />
+    </bean> -->
+    <bean id="game" class="tp.server.logic.Game">
+    </bean>
+    <bean id="mapFactory" class="tp.server.map.SixPointedStarFactory">
+    </bean>
+    <bean id="cc" class="tp.server.communication.CommunicationCenter">
+        <constructor-arg value="1410" type="int"></constructor-arg>
+        <constructor-arg ref="game"></constructor-arg>
+    </bean>
+    <bean id="emptyMap" class="tp.server.map.Map"
+          factory-bean="mapFactory"
+          factory-method="createEmptyMap">
+    </bean>
+    <bean id="map" class="tp.server.map.Map"
+          factory-bean="mapFactory"
+          factory-method="createMap">
+        <constructor-arg ref="numOfPlayers"/>
+    </bean>
+    <bean id="mv" class="tp.server.logic.SiXPStarMoveValidator">
+        <constructor-arg ref="map"/>
+    </bean>
+    <bean id="numOfPlayers" class="java.lang.Integer" factory-bean="game" factory-method="getNumOfPlayers"/>
+
+    <!--<bean id="mv" class="tp.server.logic.SiXPStarMoveValidator">
+        <constructor-arg ref="map"></constructor-arg>
+    </bean> -->
+</beans>

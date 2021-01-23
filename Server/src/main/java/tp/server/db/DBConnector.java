@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import tp.server.logic.Game;
 import tp.server.structural.Move;
 import tp.server.structural.Replay;
 import tp.server.structural.Step;
@@ -30,6 +31,9 @@ public class DBConnector {
     public boolean createGame(final int players) {
         Session session = factory.openSession();
         Transaction tx = null;
+        if (players < 2 || players == 5 || players > 6) {
+            return false;
+        }
 
         try {
             tx = session.beginTransaction();
@@ -51,7 +55,7 @@ public class DBConnector {
     }
 
     public boolean addMove(final int playerId, final Move move) {
-        if (gameId < 1) {
+        if (gameId < 1 || move == null) {
             return false;
         }
         Session session = factory.openSession();
@@ -98,5 +102,18 @@ public class DBConnector {
             replays.add(new Replay(g));
         }
         return replays;
+    }
+
+    public Replay getGameById(int gameId) {
+        Session session = factory.openSession();
+
+        Query query = session.createQuery("from GamesEntity where id=:id");
+        query.setParameter("id", gameId);
+        List<GamesEntity> gamesEntities = query.list();
+        List<Replay> replays = new ArrayList<>();
+        for (GamesEntity g : gamesEntities) {
+            replays.add(new Replay(g));
+        }
+        return replays.get(0);
     }
 }

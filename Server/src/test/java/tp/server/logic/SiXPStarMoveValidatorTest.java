@@ -12,10 +12,10 @@ import tp.server.map.SixPointedStarFactory;
 import tp.server.structural.*;
 
 @RunWith(JUnit4.class)
-public class MoveValidatorTest extends TestCase {
+public class SiXPStarMoveValidatorTest extends TestCase {
     private Map map;
     private MapFactory mapFactory;
-    private MoveValidator mv;
+    private SiXPStarMoveValidator mv;
     private Player p1;
     private Player p2;
 
@@ -26,7 +26,7 @@ public class MoveValidatorTest extends TestCase {
         map = mapFactory.createMap(2);
         p1 = new Player(mapFactory.createPawns(1, 2));
         p2 = new Player(mapFactory.createPawns(2, 2));
-        mv = new MoveValidator(map);
+        mv = new SiXPStarMoveValidator(map);
     }
 
     @Test
@@ -34,15 +34,15 @@ public class MoveValidatorTest extends TestCase {
         Step s1 = new Step(p1.getPawns().get(0), p1.getPawns().get(0).getLocation());
         Move move1 = new Move();
         move1.addStep(s1);
-        assertTrue(mv.Validate(move1));
+        assertTrue(mv.validate(move1));
 
         Step s2 = new Step(p1.getPawns().get(0), map.getField(0, 4, -4));
 
         Move move2 = new Move();
         move2.addStep(s2);
-        assertTrue(mv.Validate(move2));
+        assertTrue(mv.validate(move2));
         move2.addStep(s1);
-        assertFalse(mv.Validate(move2));
+        assertFalse(mv.validate(move2));
 
         Move move3 = new Move();
         move3.addStep(new Step(p2.getPawns().get(0), map.getField(0, 4, -4)));
@@ -50,7 +50,7 @@ public class MoveValidatorTest extends TestCase {
 
         Move move4 = new Move();
         move4.addStep(new Step(p1.getPawns().get(0), map.getField(-1, 4, -3)));
-        assertTrue(mv.Validate(move4));
+        assertTrue(mv.validate(move4));
     }
 
     @Test
@@ -60,11 +60,11 @@ public class MoveValidatorTest extends TestCase {
         Step s3 = new Step(p1.getPawns().get(0), map.getField(1, 4, -5));
         Move move1 = new Move();
         move1.addStep(s1);
-        assertFalse(mv.Validate(move1));
+        assertFalse(mv.validate(move1));
 
         Move move2 = new Move();
         move2.addStep(s2);
         move2.addStep(s3);
-        assertFalse(mv.Validate(move2));
+        assertFalse(mv.validate(move2));
     }
 }

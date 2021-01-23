@@ -2,9 +2,7 @@ package tp.server.logic;
 
 import tp.server.db.MovesEntity;
 import tp.server.map.Map;
-import tp.server.structural.Field;
 import tp.server.structural.Move;
-import tp.server.structural.Pawn;
 import tp.server.structural.Step;
 
 import java.util.ArrayList;
