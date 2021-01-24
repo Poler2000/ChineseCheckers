@@ -187,6 +187,30 @@ public class Game  {
     }
 
     /**
+     * Creates json with current game state using specified list of players
+     * @param repPlayers
+     * @return
+     */
+    private String getCurrentGameInfo(ArrayList<AbstractPlayer> repPlayers) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
+
+        for (AbstractPlayer p : repPlayers) {
+            pawns.addAll(p.getPawns());
+        }
+
+        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, 0);
+        try {
+            return objectMapper.writeValueAsString(msg);
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Responsible for dealing with messages from client
      * @param msg message received
      * @param fromPlayer specify who sent the message
@@ -234,6 +258,11 @@ public class Game  {
         }
     }
 
+    /**
+     * inits replay
+     * @param node
+     * @param forPlayer
+     */
     private void loadReplayForPlayer(ObjectNode node, int forPlayer) {
         int id = 0;
         if (node.has("id")) {
@@ -246,6 +275,11 @@ public class Game  {
         performReplay(forPlayer, id);
     }
 
+    /**
+     * show replay to the player in 1s intervals
+     * @param forPlayer
+     * @param gameId
+     */
     private void performReplay(int forPlayer, int gameId) {
         MapFactory mapFactory = (MapFactory) beanFactory.getBean("mapFactory");
         int playersNum = dbConnector.getGameById(gameId).players;
@@ -265,9 +299,9 @@ public class Game  {
             e.printStackTrace();
         }
         for (Move m : moves) {
-            repPlayers.get(i - 1).makeMove(m);
-            String msg = getCurrentGameInfo(repPlayers, 0);
+            String msg = getCurrentGameInfo(repPlayers);
             communicationCenter.sendMessage(msg, forPlayer);
+            repPlayers.get(i - 1).makeMove(m);
             try {
                 Thread.sleep(1000);
             }
@@ -281,26 +315,13 @@ public class Game  {
         }
     }
 
-    private String getCurrentGameInfo(ArrayList<AbstractPlayer> repPlayers, int i) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
-
-        for (AbstractPlayer p : repPlayers) {
-            pawns.addAll(p.getPawns());
-        }
-
-        ServerMsg msg = new StateReport(currentPlayer, pawns, 0, 0);
-        try {
-            return objectMapper.writeValueAsString(msg);
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
+
+    /**
+     * sends json with list of replays
+     * @param forPlayer player to send list to
+     */
     private void sendReplayList(int forPlayer) {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -365,7 +386,9 @@ public class Game  {
         }
     }
 
-
+    /**
+     * @return current number of connected players
+     */
     public int getNumOfPlayers() {
         return numOfPlayers;
     }

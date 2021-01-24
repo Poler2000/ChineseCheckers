@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import tp.server.logic.Game;
 import tp.server.structural.Move;
 import tp.server.structural.Replay;
 import tp.server.structural.Step;
@@ -15,6 +14,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class used to mediate between database and app
+ */
 public class DBConnector {
     private static SessionFactory factory;
     private int gameId = 0;
@@ -28,6 +30,11 @@ public class DBConnector {
         }
     }
 
+    /**
+     * creates game in database
+     * @param players number of players
+     * @return success status
+     */
     public boolean createGame(final int players) {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -54,6 +61,12 @@ public class DBConnector {
         return gameId > 0;
     }
 
+    /**
+     * adds given move to the database
+     * @param playerId id of player who perform move
+     * @param move move to save
+     * @return success status
+     */
     public boolean addMove(final int playerId, final Move move) {
         if (gameId < 1 || move == null) {
             return false;
@@ -84,6 +97,11 @@ public class DBConnector {
         return success > 0;
     }
 
+    /**
+     * returns all moves from specified game
+     * @param gameId  gameId
+     * @return all moves from specified game
+     */
     public List getMovesForGame(int gameId) {
         Session session = factory.openSession();
 
@@ -92,6 +110,9 @@ public class DBConnector {
         return query.list();
     }
 
+    /**
+     * @return all replay games from database
+     */
     public List<Replay> getGames() {
         Session session = factory.openSession();
 
@@ -104,6 +125,11 @@ public class DBConnector {
         return replays;
     }
 
+    /**
+     * returns replay with specified id
+     * @param gameId
+     * @return
+     */
     public Replay getGameById(int gameId) {
         Session session = factory.openSession();
 
